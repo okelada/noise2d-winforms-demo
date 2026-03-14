@@ -5,6 +5,6 @@ quick and dirty, FWIW
 
 # References:
 
-[Tutorial part 1](https://link-url-here.org)https://www.scratchapixel.com/lessons/procedural-generation-virtual-worlds/procedural-patterns-noise-part-1/introduction.html)
+[Tutorial part 1](https://www.scratchapixel.com/lessons/procedural-generation-virtual-worlds/procedural-patterns-noise-part-1/introduction.html)
 <br>
 [Tutorial part 1](https://www.scratchapixel.com/lessons/procedural-generation-virtual-worlds/perlin-noise-part-2/perlin-noise.html)

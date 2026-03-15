@@ -203,9 +203,9 @@
             label9.Font = new Font("Segoe UI", 7.8F);
             label9.Location = new Point(953, 395);
             label9.Name = "label9";
-            label9.Size = new Size(40, 17);
+            label9.Size = new Size(80, 17);
             label9.TabIndex = 38;
-            label9.Text = "Perlin";
+            label9.Text = "Perlin (base)";
             // 
             // label10
             // 
@@ -213,9 +213,9 @@
             label10.Font = new Font("Segoe UI", 7.8F);
             label10.Location = new Point(487, 806);
             label10.Name = "label10";
-            label10.Size = new Size(50, 17);
+            label10.Size = new Size(133, 17);
             label10.TabIndex = 37;
-            label10.Text = "Marble";
+            label10.Text = "Fractal sum  / Marble";
             // 
             // Turb
             // 
@@ -223,9 +223,9 @@
             Turb.Font = new Font("Segoe UI", 7.8F);
             Turb.Location = new Point(487, 395);
             Turb.Name = "Turb";
-            Turb.Size = new Size(72, 17);
+            Turb.Size = new Size(151, 17);
             Turb.TabIndex = 36;
-            Turb.Text = "Turbulence";
+            Turb.Text = "Fractal sum / Turbulence";
             // 
             // Fractal
             // 
@@ -243,9 +243,9 @@
             label13.Font = new Font("Segoe UI", 7.8F);
             label13.Location = new Point(27, 395);
             label13.Name = "label13";
-            label13.Size = new Size(39, 17);
+            label13.Size = new Size(79, 17);
             label13.TabIndex = 34;
-            label13.Text = "Value";
+            label13.Text = "Value (base)";
             // 
             // label14
             // 
@@ -384,11 +384,11 @@
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(227, 29);
+            label5.Location = new Point(232, 28);
             label5.Name = "label5";
-            label5.Size = new Size(70, 20);
+            label5.Size = new Size(69, 20);
             label5.TabIndex = 44;
-            label5.Text = "fBm Gain";
+            label5.Text = "fBm gain";
             // 
             // tbFSAmplitudeMultiplier
             // 
@@ -424,11 +424,11 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(77, 29);
+            label3.Location = new Point(27, 29);
             label3.Name = "label3";
-            label3.Size = new Size(41, 20);
+            label3.Size = new Size(91, 20);
             label3.TabIndex = 10;
-            label3.Text = "Freq.";
+            label3.Text = "Spatial Freq.";
             // 
             // tbFSFrequency
             // 
@@ -558,7 +558,7 @@
             // 
             // btSetDefaults
             // 
-            btSetDefaults.Location = new Point(770, 73);
+            btSetDefaults.Location = new Point(770, 26);
             btSetDefaults.Name = "btSetDefaults";
             btSetDefaults.Size = new Size(107, 29);
             btSetDefaults.TabIndex = 55;
@@ -570,7 +570,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1379, 952);
+            ClientSize = new Size(1379, 957);
             Controls.Add(btSetDefaults);
             Controls.Add(labelStatus);
             Controls.Add(linkLabel1);

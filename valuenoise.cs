@@ -132,7 +132,7 @@ public class ValueNoise : BaseNoise
         float[] noiseMap = new float[imageWidth * imageHeight];
 
 
-        float maxNoiseVal = 0.0f;
+        //float maxNoiseVal = 0.0f;
         for (int j = 0; j < imageHeight; ++j)
         {
             for (int i = 0; i < imageWidth; ++i)
@@ -145,12 +145,10 @@ public class ValueNoise : BaseNoise
                     pNoise *= fBm_lacunarity;
                     amplitude *= fBm_gain;
                 }
-                if (noiseMap[j * imageWidth + i] > maxNoiseVal)
-                    maxNoiseVal = noiseMap[j * imageWidth + i];
+                //if (noiseMap[j * imageWidth + i] > maxNoiseVal)
+                //    maxNoiseVal = noiseMap[j * imageWidth + i];
             }
         }
-        //for (int i = 0; i < imageWidth * imageHeight; ++i)
-        //    noiseMap[i] /= maxNoiseVal;
 
         return NormalizeBuffer(noiseMap);
     }
@@ -162,12 +160,7 @@ public class ValueNoise : BaseNoise
         float[] noiseMap = new float[imageWidth * imageHeight];
 
         // Generate turbulence pattern
-        ////float frequency = 0.02f;
-        //float fBm_lacunarity = 1.8f;
-        //float fBm_gain = 0.35f;
-        //int numLayers = 5;
-
-        float maxNoiseVal = 0.0f;
+        //float maxNoiseVal = 0.0f;
         for (int j = 0; j < imageHeight; ++j)
         {
             for (int i = 0; i < imageWidth; ++i)
@@ -176,11 +169,11 @@ public class ValueNoise : BaseNoise
                 float amplitude = 1;
                 for (int l = 0; l < numLayers; ++l)
                 {
-                    noiseMap[j * imageWidth + i] += Math.Abs(2.0f * eval2(pNoise) - 1) * amplitude;
+                    noiseMap[j * imageWidth + i] += Math.Abs(2.0f * eval2(pNoise) - 1f) * amplitude;
                     pNoise *= fBm_lacunarity;
                     amplitude *= fBm_gain;
                 }
-                if (noiseMap[j * imageWidth + i] > maxNoiseVal) maxNoiseVal = noiseMap[j * imageWidth + i];
+                //if (noiseMap[j * imageWidth + i] > maxNoiseVal) maxNoiseVal = noiseMap[j * imageWidth + i];
             }
         }
 
@@ -196,12 +189,6 @@ public class ValueNoise : BaseNoise
         float[] noiseMap = new float[imageWidth * imageHeight];
 
         // Generate marble pattern
-        ////float frequency = 0.02f;
-        //float fBm_lacunarity = 1.8f;
-        //float fBm_gain = 0.35f;
-        //int numLayers = 5;
-
-
         for (int j = 0; j < imageHeight; ++j)
         {
             for (int i = 0; i < imageWidth; ++i)

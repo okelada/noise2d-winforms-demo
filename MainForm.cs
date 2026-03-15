@@ -151,13 +151,7 @@ namespace Noise2D
                 Bitmap? OutputImageMarble = null;
                 Bitmap? OutputImagePerlin = null;
 
-                pbFractalPerlin.Image = null;
-                pbValueNoise.Image = null;
-                pbFractalValue.Image = null;
-                pbTurbNoise.Image = null;
-                pbMarbleNoise.Image = null;
-                pbPerlinNoise.Image = null;
-
+                ResetImages();
 
                 try
                 {
@@ -237,6 +231,13 @@ namespace Noise2D
         private void ResetAll()
         {
             ResetImages();
+
+            noiseBufferValue = null;
+            noiseBufferFractal = null;
+            noiseBufferTurb = null;
+            noiseBufferMarble = null;
+            noiseBufferPerlin = null;
+            noiseBufferFractalPerlin = null;
             //lvLog.Items.Clear();
         }
 

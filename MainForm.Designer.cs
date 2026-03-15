@@ -30,6 +30,14 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             groupBox1 = new GroupBox();
+            panel2 = new Panel();
+            btSaveToCSV_5 = new Button();
+            btSaveToCSV_4 = new Button();
+            btSaveToCSV_3 = new Button();
+            btSaveToCSV_2 = new Button();
+            btSaveToCSV_1 = new Button();
+            btSaveToCSV_0 = new Button();
+            panel1 = new Panel();
             label9 = new Label();
             label10 = new Label();
             Turb = new Label();
@@ -39,15 +47,12 @@
             pbPerlinNoise = new PictureBox();
             pbMarbleNoise = new PictureBox();
             pbTurbNoise = new PictureBox();
-            pbFractalNoise = new PictureBox();
+            pbFractalValue = new PictureBox();
             pbValueNoise = new PictureBox();
-            pbWhiteNoise = new PictureBox();
+            pbFractalPerlin = new PictureBox();
             linkLabel2 = new LinkLabel();
             linkLabel1 = new LinkLabel();
             label8 = new Label();
-            tbGlobalRandomSeed = new TextBox();
-            label6 = new Label();
-            tbPerlinScale = new TextBox();
             label7 = new Label();
             udFSnLayers = new NumericUpDown();
             label5 = new Label();
@@ -56,29 +61,41 @@
             tbFSFrequencyMultiplier = new TextBox();
             label3 = new Label();
             tbFSFrequency = new TextBox();
-            folderBrowserDialog1 = new FolderBrowserDialog();
             tbImageWidth = new TextBox();
             label1 = new Label();
             label2 = new Label();
             tbImageHeight = new TextBox();
             groupBox2 = new GroupBox();
-            groupBox3 = new GroupBox();
             groupBox4 = new GroupBox();
+            cbTableSize = new ComboBox();
+            label6 = new Label();
+            udSeed = new NumericUpDown();
+            labelStatus = new Label();
+            btSetDefaults = new Button();
+            saveFileDialog1 = new SaveFileDialog();
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pbPerlinNoise).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pbMarbleNoise).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pbTurbNoise).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pbFractalNoise).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pbFractalValue).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pbValueNoise).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pbWhiteNoise).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pbFractalPerlin).BeginInit();
             ((System.ComponentModel.ISupportInitialize)udFSnLayers).BeginInit();
             groupBox2.SuspendLayout();
-            groupBox3.SuspendLayout();
             groupBox4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)udSeed).BeginInit();
             SuspendLayout();
             // 
             // groupBox1
             // 
+            groupBox1.Controls.Add(panel2);
+            groupBox1.Controls.Add(btSaveToCSV_5);
+            groupBox1.Controls.Add(btSaveToCSV_4);
+            groupBox1.Controls.Add(btSaveToCSV_3);
+            groupBox1.Controls.Add(btSaveToCSV_2);
+            groupBox1.Controls.Add(btSaveToCSV_1);
+            groupBox1.Controls.Add(btSaveToCSV_0);
+            groupBox1.Controls.Add(panel1);
             groupBox1.Controls.Add(label9);
             groupBox1.Controls.Add(label10);
             groupBox1.Controls.Add(Turb);
@@ -88,21 +105,103 @@
             groupBox1.Controls.Add(pbPerlinNoise);
             groupBox1.Controls.Add(pbMarbleNoise);
             groupBox1.Controls.Add(pbTurbNoise);
-            groupBox1.Controls.Add(pbFractalNoise);
+            groupBox1.Controls.Add(pbFractalValue);
             groupBox1.Controls.Add(pbValueNoise);
-            groupBox1.Controls.Add(pbWhiteNoise);
-            groupBox1.Location = new Point(11, 109);
+            groupBox1.Controls.Add(pbFractalPerlin);
+            groupBox1.Location = new Point(12, 109);
             groupBox1.Name = "groupBox1";
             groupBox1.Size = new Size(1355, 840);
             groupBox1.TabIndex = 3;
             groupBox1.TabStop = false;
             groupBox1.Text = "Outputs";
             // 
+            // panel2
+            // 
+            panel2.BackColor = SystemColors.ControlDarkDark;
+            panel2.Location = new Point(443, 23);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(5, 803);
+            panel2.TabIndex = 40;
+            // 
+            // btSaveToCSV_5
+            // 
+            btSaveToCSV_5.Location = new Point(1232, 807);
+            btSaveToCSV_5.Name = "btSaveToCSV_5";
+            btSaveToCSV_5.Size = new Size(99, 27);
+            btSaveToCSV_5.TabIndex = 61;
+            btSaveToCSV_5.Tag = "5";
+            btSaveToCSV_5.Text = "Save to .csv";
+            btSaveToCSV_5.UseVisualStyleBackColor = true;
+            btSaveToCSV_5.Click += btSaveToCSV_Click;
+            // 
+            // btSaveToCSV_4
+            // 
+            btSaveToCSV_4.Location = new Point(766, 807);
+            btSaveToCSV_4.Name = "btSaveToCSV_4";
+            btSaveToCSV_4.Size = new Size(99, 27);
+            btSaveToCSV_4.TabIndex = 60;
+            btSaveToCSV_4.Tag = "4";
+            btSaveToCSV_4.Text = "Save to .csv";
+            btSaveToCSV_4.UseVisualStyleBackColor = true;
+            btSaveToCSV_4.Click += btSaveToCSV_Click;
+            // 
+            // btSaveToCSV_3
+            // 
+            btSaveToCSV_3.Location = new Point(306, 807);
+            btSaveToCSV_3.Name = "btSaveToCSV_3";
+            btSaveToCSV_3.Size = new Size(99, 27);
+            btSaveToCSV_3.TabIndex = 59;
+            btSaveToCSV_3.Tag = "3";
+            btSaveToCSV_3.Text = "Save to .csv";
+            btSaveToCSV_3.UseVisualStyleBackColor = true;
+            btSaveToCSV_3.Click += btSaveToCSV_Click;
+            // 
+            // btSaveToCSV_2
+            // 
+            btSaveToCSV_2.Location = new Point(1232, 396);
+            btSaveToCSV_2.Name = "btSaveToCSV_2";
+            btSaveToCSV_2.Size = new Size(99, 27);
+            btSaveToCSV_2.TabIndex = 58;
+            btSaveToCSV_2.Tag = "2";
+            btSaveToCSV_2.Text = "Save to .csv";
+            btSaveToCSV_2.UseVisualStyleBackColor = true;
+            btSaveToCSV_2.Click += btSaveToCSV_Click;
+            // 
+            // btSaveToCSV_1
+            // 
+            btSaveToCSV_1.Location = new Point(766, 396);
+            btSaveToCSV_1.Name = "btSaveToCSV_1";
+            btSaveToCSV_1.Size = new Size(99, 27);
+            btSaveToCSV_1.TabIndex = 57;
+            btSaveToCSV_1.Tag = "1";
+            btSaveToCSV_1.Text = "Save to .csv";
+            btSaveToCSV_1.UseVisualStyleBackColor = true;
+            btSaveToCSV_1.Click += btSaveToCSV_Click;
+            // 
+            // btSaveToCSV_0
+            // 
+            btSaveToCSV_0.Location = new Point(306, 395);
+            btSaveToCSV_0.Name = "btSaveToCSV_0";
+            btSaveToCSV_0.Size = new Size(99, 27);
+            btSaveToCSV_0.TabIndex = 56;
+            btSaveToCSV_0.Tag = "0";
+            btSaveToCSV_0.Text = "Save to .csv";
+            btSaveToCSV_0.UseVisualStyleBackColor = true;
+            btSaveToCSV_0.Click += btSaveToCSV_Click;
+            // 
+            // panel1
+            // 
+            panel1.BackColor = SystemColors.ControlDarkDark;
+            panel1.Location = new Point(907, 23);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(5, 803);
+            panel1.TabIndex = 39;
+            // 
             // label9
             // 
             label9.AutoSize = true;
             label9.Font = new Font("Segoe UI", 7.8F);
-            label9.Location = new Point(959, 806);
+            label9.Location = new Point(953, 395);
             label9.Name = "label9";
             label9.Size = new Size(40, 17);
             label9.TabIndex = 38;
@@ -112,7 +211,7 @@
             // 
             label10.AutoSize = true;
             label10.Font = new Font("Segoe UI", 7.8F);
-            label10.Location = new Point(493, 806);
+            label10.Location = new Point(487, 806);
             label10.Name = "label10";
             label10.Size = new Size(50, 17);
             label10.TabIndex = 37;
@@ -122,27 +221,27 @@
             // 
             Turb.AutoSize = true;
             Turb.Font = new Font("Segoe UI", 7.8F);
-            Turb.Location = new Point(27, 806);
+            Turb.Location = new Point(487, 395);
             Turb.Name = "Turb";
-            Turb.Size = new Size(35, 17);
+            Turb.Size = new Size(72, 17);
             Turb.TabIndex = 36;
-            Turb.Text = "Turb";
+            Turb.Text = "Turbulence";
             // 
             // Fractal
             // 
             Fractal.AutoSize = true;
             Fractal.Font = new Font("Segoe UI", 7.8F);
-            Fractal.Location = new Point(959, 393);
+            Fractal.Location = new Point(27, 806);
             Fractal.Name = "Fractal";
-            Fractal.Size = new Size(46, 17);
+            Fractal.Size = new Size(118, 17);
             Fractal.TabIndex = 35;
-            Fractal.Text = "Fractal";
+            Fractal.Text = "Fractal sum / Value";
             // 
             // label13
             // 
             label13.AutoSize = true;
             label13.Font = new Font("Segoe UI", 7.8F);
-            label13.Location = new Point(493, 393);
+            label13.Location = new Point(27, 395);
             label13.Name = "label13";
             label13.Size = new Size(39, 17);
             label13.TabIndex = 34;
@@ -152,16 +251,16 @@
             // 
             label14.AutoSize = true;
             label14.Font = new Font("Segoe UI", 7.8F);
-            label14.Location = new Point(27, 393);
+            label14.Location = new Point(953, 806);
             label14.Name = "label14";
-            label14.Size = new Size(41, 17);
+            label14.Size = new Size(119, 17);
             label14.TabIndex = 33;
-            label14.Text = "White";
+            label14.Text = "Fractal sum / Perlin";
             // 
             // pbPerlinNoise
             // 
             pbPerlinNoise.BorderStyle = BorderStyle.FixedSingle;
-            pbPerlinNoise.Location = new Point(959, 437);
+            pbPerlinNoise.Location = new Point(953, 26);
             pbPerlinNoise.Name = "pbPerlinNoise";
             pbPerlinNoise.Size = new Size(378, 364);
             pbPerlinNoise.SizeMode = PictureBoxSizeMode.Zoom;
@@ -173,7 +272,7 @@
             // pbMarbleNoise
             // 
             pbMarbleNoise.BorderStyle = BorderStyle.FixedSingle;
-            pbMarbleNoise.Location = new Point(493, 437);
+            pbMarbleNoise.Location = new Point(487, 437);
             pbMarbleNoise.Name = "pbMarbleNoise";
             pbMarbleNoise.Size = new Size(378, 364);
             pbMarbleNoise.SizeMode = PictureBoxSizeMode.Zoom;
@@ -185,7 +284,7 @@
             // pbTurbNoise
             // 
             pbTurbNoise.BorderStyle = BorderStyle.FixedSingle;
-            pbTurbNoise.Location = new Point(27, 437);
+            pbTurbNoise.Location = new Point(487, 26);
             pbTurbNoise.Name = "pbTurbNoise";
             pbTurbNoise.Size = new Size(378, 364);
             pbTurbNoise.SizeMode = PictureBoxSizeMode.Zoom;
@@ -194,22 +293,22 @@
             pbTurbNoise.Tag = 3;
             pbTurbNoise.Click += pbThumbnail_Click;
             // 
-            // pbFractalNoise
+            // pbFractalValue
             // 
-            pbFractalNoise.BorderStyle = BorderStyle.FixedSingle;
-            pbFractalNoise.Location = new Point(959, 24);
-            pbFractalNoise.Name = "pbFractalNoise";
-            pbFractalNoise.Size = new Size(378, 364);
-            pbFractalNoise.SizeMode = PictureBoxSizeMode.Zoom;
-            pbFractalNoise.TabIndex = 29;
-            pbFractalNoise.TabStop = false;
-            pbFractalNoise.Tag = 2;
-            pbFractalNoise.Click += pbThumbnail_Click;
+            pbFractalValue.BorderStyle = BorderStyle.FixedSingle;
+            pbFractalValue.Location = new Point(27, 437);
+            pbFractalValue.Name = "pbFractalValue";
+            pbFractalValue.Size = new Size(378, 364);
+            pbFractalValue.SizeMode = PictureBoxSizeMode.Zoom;
+            pbFractalValue.TabIndex = 29;
+            pbFractalValue.TabStop = false;
+            pbFractalValue.Tag = 2;
+            pbFractalValue.Click += pbThumbnail_Click;
             // 
             // pbValueNoise
             // 
             pbValueNoise.BorderStyle = BorderStyle.FixedSingle;
-            pbValueNoise.Location = new Point(493, 24);
+            pbValueNoise.Location = new Point(27, 26);
             pbValueNoise.Name = "pbValueNoise";
             pbValueNoise.Size = new Size(378, 364);
             pbValueNoise.SizeMode = PictureBoxSizeMode.Zoom;
@@ -218,22 +317,22 @@
             pbValueNoise.Tag = 1;
             pbValueNoise.Click += pbThumbnail_Click;
             // 
-            // pbWhiteNoise
+            // pbFractalPerlin
             // 
-            pbWhiteNoise.BorderStyle = BorderStyle.FixedSingle;
-            pbWhiteNoise.Location = new Point(27, 24);
-            pbWhiteNoise.Name = "pbWhiteNoise";
-            pbWhiteNoise.Size = new Size(378, 364);
-            pbWhiteNoise.SizeMode = PictureBoxSizeMode.Zoom;
-            pbWhiteNoise.TabIndex = 27;
-            pbWhiteNoise.TabStop = false;
-            pbWhiteNoise.Tag = 0;
-            pbWhiteNoise.Click += pbThumbnail_Click;
+            pbFractalPerlin.BorderStyle = BorderStyle.FixedSingle;
+            pbFractalPerlin.Location = new Point(953, 437);
+            pbFractalPerlin.Name = "pbFractalPerlin";
+            pbFractalPerlin.Size = new Size(378, 364);
+            pbFractalPerlin.SizeMode = PictureBoxSizeMode.Zoom;
+            pbFractalPerlin.TabIndex = 27;
+            pbFractalPerlin.TabStop = false;
+            pbFractalPerlin.Tag = 0;
+            pbFractalPerlin.Click += pbThumbnail_Click;
             // 
             // linkLabel2
             // 
             linkLabel2.AutoSize = true;
-            linkLabel2.Location = new Point(1234, 68);
+            linkLabel2.Location = new Point(1263, 35);
             linkLabel2.Name = "linkLabel2";
             linkLabel2.Size = new Size(103, 20);
             linkLabel2.TabIndex = 40;
@@ -244,7 +343,7 @@
             // linkLabel1
             // 
             linkLabel1.AutoSize = true;
-            linkLabel1.Location = new Point(1234, 22);
+            linkLabel1.Location = new Point(1263, 9);
             linkLabel1.Name = "linkLabel1";
             linkLabel1.Size = new Size(103, 20);
             linkLabel1.TabIndex = 39;
@@ -255,47 +354,16 @@
             // label8
             // 
             label8.AutoSize = true;
-            label8.Location = new Point(243, 31);
+            label8.Location = new Point(211, 29);
             label8.Name = "label8";
             label8.Size = new Size(42, 20);
             label8.TabIndex = 51;
             label8.Text = "Seed";
             // 
-            // tbGlobalRandomSeed
-            // 
-            tbGlobalRandomSeed.Location = new Point(291, 28);
-            tbGlobalRandomSeed.Name = "tbGlobalRandomSeed";
-            tbGlobalRandomSeed.Size = new Size(72, 27);
-            tbGlobalRandomSeed.TabIndex = 50;
-            tbGlobalRandomSeed.Text = "2016";
-            tbGlobalRandomSeed.TextAlign = HorizontalAlignment.Right;
-            tbGlobalRandomSeed.Validating += tbGlobalRandomSeed_Validating;
-            tbGlobalRandomSeed.Validated += tbGlobalRandomSeed_Validated;
-            // 
-            // label6
-            // 
-            label6.AutoSize = true;
-            label6.Location = new Point(111, 31);
-            label6.Name = "label6";
-            label6.Size = new Size(44, 20);
-            label6.TabIndex = 49;
-            label6.Text = "Scale";
-            // 
-            // tbPerlinScale
-            // 
-            tbPerlinScale.Location = new Point(161, 26);
-            tbPerlinScale.Name = "tbPerlinScale";
-            tbPerlinScale.Size = new Size(72, 27);
-            tbPerlinScale.TabIndex = 48;
-            tbPerlinScale.Text = "64";
-            tbPerlinScale.TextAlign = HorizontalAlignment.Right;
-            tbPerlinScale.Validating += tbPerlinScale_Validating;
-            tbPerlinScale.Validated += tbPerlinScale_Validated;
-            // 
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new Point(267, 61);
+            label7.Location = new Point(243, 61);
             label7.Name = "label7";
             label7.Size = new Size(58, 20);
             label7.TabIndex = 47;
@@ -303,31 +371,32 @@
             // 
             // udFSnLayers
             // 
-            udFSnLayers.Location = new Point(331, 59);
+            udFSnLayers.Location = new Point(307, 59);
             udFSnLayers.Maximum = new decimal(new int[] { 10, 0, 0, 0 });
             udFSnLayers.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             udFSnLayers.Name = "udFSnLayers";
-            udFSnLayers.Size = new Size(114, 27);
+            udFSnLayers.Size = new Size(60, 27);
             udFSnLayers.TabIndex = 6;
-            udFSnLayers.Value = new decimal(new int[] { 5, 0, 0, 0 });
+            udFSnLayers.TextAlign = HorizontalAlignment.Right;
+            udFSnLayers.Value = new decimal(new int[] { 4, 0, 0, 0 });
             udFSnLayers.ValueChanged += udFSnLayers_ValueChanged;
             // 
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(251, 29);
+            label5.Location = new Point(227, 29);
             label5.Name = "label5";
-            label5.Size = new Size(74, 20);
+            label5.Size = new Size(70, 20);
             label5.TabIndex = 44;
-            label5.Text = "AmpMult.";
+            label5.Text = "fBm Gain";
             // 
             // tbFSAmplitudeMultiplier
             // 
-            tbFSAmplitudeMultiplier.Location = new Point(331, 26);
+            tbFSAmplitudeMultiplier.Location = new Point(307, 26);
             tbFSAmplitudeMultiplier.Name = "tbFSAmplitudeMultiplier";
-            tbFSAmplitudeMultiplier.Size = new Size(114, 27);
+            tbFSAmplitudeMultiplier.Size = new Size(60, 27);
             tbFSAmplitudeMultiplier.TabIndex = 43;
-            tbFSAmplitudeMultiplier.Text = "0.35";
+            tbFSAmplitudeMultiplier.Text = "0.5";
             tbFSAmplitudeMultiplier.TextAlign = HorizontalAlignment.Right;
             tbFSAmplitudeMultiplier.Validating += tbFSAmplitudeMultiplier_Validating;
             tbFSAmplitudeMultiplier.Validated += tbFSAmplitudeMultiplier_Validated;
@@ -335,19 +404,19 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(45, 61);
+            label4.Location = new Point(14, 61);
             label4.Name = "label4";
-            label4.Size = new Size(71, 20);
+            label4.Size = new Size(104, 20);
             label4.TabIndex = 42;
-            label4.Text = "FreqMult.";
+            label4.Text = "fBm lacunarity";
             // 
             // tbFSFrequencyMultiplier
             // 
-            tbFSFrequencyMultiplier.Location = new Point(119, 59);
+            tbFSFrequencyMultiplier.Location = new Point(124, 59);
             tbFSFrequencyMultiplier.Name = "tbFSFrequencyMultiplier";
-            tbFSFrequencyMultiplier.Size = new Size(114, 27);
+            tbFSFrequencyMultiplier.Size = new Size(60, 27);
             tbFSFrequencyMultiplier.TabIndex = 41;
-            tbFSFrequencyMultiplier.Text = "1.8";
+            tbFSFrequencyMultiplier.Text = "2.0";
             tbFSFrequencyMultiplier.TextAlign = HorizontalAlignment.Right;
             tbFSFrequencyMultiplier.Validating += tbFSFrequencyMultiplier_Validating;
             tbFSFrequencyMultiplier.Validated += tbFSFrequencyMultiplier_Validated;
@@ -355,7 +424,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(72, 29);
+            label3.Location = new Point(77, 29);
             label3.Name = "label3";
             label3.Size = new Size(41, 20);
             label3.TabIndex = 10;
@@ -363,24 +432,20 @@
             // 
             // tbFSFrequency
             // 
-            tbFSFrequency.Location = new Point(119, 26);
+            tbFSFrequency.Location = new Point(124, 26);
             tbFSFrequency.Name = "tbFSFrequency";
-            tbFSFrequency.Size = new Size(114, 27);
+            tbFSFrequency.Size = new Size(60, 27);
             tbFSFrequency.TabIndex = 9;
             tbFSFrequency.Text = "0.02";
             tbFSFrequency.TextAlign = HorizontalAlignment.Right;
             tbFSFrequency.Validating += tbFSFrequency_Validating;
             tbFSFrequency.Validated += tbFSFrequency_Validated;
             // 
-            // folderBrowserDialog1
-            // 
-            folderBrowserDialog1.ShowNewFolderButton = false;
-            // 
             // tbImageWidth
             // 
-            tbImageWidth.Location = new Point(106, 28);
+            tbImageWidth.Location = new Point(66, 26);
             tbImageWidth.Name = "tbImageWidth";
-            tbImageWidth.Size = new Size(89, 27);
+            tbImageWidth.Size = new Size(60, 27);
             tbImageWidth.TabIndex = 4;
             tbImageWidth.Text = "1024";
             tbImageWidth.TextAlign = HorizontalAlignment.Right;
@@ -390,7 +455,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(51, 31);
+            label1.Location = new Point(11, 29);
             label1.Name = "label1";
             label1.Size = new Size(49, 20);
             label1.TabIndex = 5;
@@ -399,7 +464,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(51, 64);
+            label2.Location = new Point(11, 61);
             label2.Name = "label2";
             label2.Size = new Size(54, 20);
             label2.TabIndex = 8;
@@ -407,9 +472,9 @@
             // 
             // tbImageHeight
             // 
-            tbImageHeight.Location = new Point(106, 61);
+            tbImageHeight.Location = new Point(66, 59);
             tbImageHeight.Name = "tbImageHeight";
-            tbImageHeight.Size = new Size(89, 27);
+            tbImageHeight.Size = new Size(60, 27);
             tbImageHeight.TabIndex = 7;
             tbImageHeight.Text = "1024";
             tbImageHeight.TextAlign = HorizontalAlignment.Right;
@@ -426,48 +491,91 @@
             groupBox2.Controls.Add(label7);
             groupBox2.Controls.Add(label5);
             groupBox2.Controls.Add(udFSnLayers);
-            groupBox2.Location = new Point(445, 9);
+            groupBox2.Location = new Point(381, 9);
             groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(461, 94);
+            groupBox2.Size = new Size(383, 94);
             groupBox2.TabIndex = 52;
             groupBox2.TabStop = false;
-            groupBox2.Text = "Value noise";
-            // 
-            // groupBox3
-            // 
-            groupBox3.Controls.Add(tbPerlinScale);
-            groupBox3.Controls.Add(label6);
-            groupBox3.Location = new Point(953, 9);
-            groupBox3.Name = "groupBox3";
-            groupBox3.Size = new Size(250, 94);
-            groupBox3.TabIndex = 53;
-            groupBox3.TabStop = false;
-            groupBox3.Text = "Perlin";
+            groupBox2.Text = "Fractal sum";
             // 
             // groupBox4
             // 
+            groupBox4.Controls.Add(cbTableSize);
+            groupBox4.Controls.Add(label6);
+            groupBox4.Controls.Add(udSeed);
             groupBox4.Controls.Add(tbImageHeight);
             groupBox4.Controls.Add(tbImageWidth);
             groupBox4.Controls.Add(label1);
             groupBox4.Controls.Add(label8);
-            groupBox4.Controls.Add(tbGlobalRandomSeed);
             groupBox4.Controls.Add(label2);
             groupBox4.Location = new Point(12, 9);
             groupBox4.Name = "groupBox4";
-            groupBox4.Size = new Size(384, 94);
+            groupBox4.Size = new Size(349, 94);
             groupBox4.TabIndex = 54;
             groupBox4.TabStop = false;
             groupBox4.Text = "Global";
+            // 
+            // cbTableSize
+            // 
+            cbTableSize.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbTableSize.FormattingEnabled = true;
+            cbTableSize.Items.AddRange(new object[] { "2", "4", "8", "16", "32", "64", "128", "256", "512", "1024", "2048" });
+            cbTableSize.Location = new Point(259, 59);
+            cbTableSize.Name = "cbTableSize";
+            cbTableSize.Size = new Size(60, 28);
+            cbTableSize.TabIndex = 53;
+            cbTableSize.SelectedIndexChanged += cbTableSize_SelectedIndexChanged;
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(180, 61);
+            label6.Name = "label6";
+            label6.Size = new Size(73, 20);
+            label6.TabIndex = 52;
+            label6.Text = "Table size";
+            // 
+            // udSeed
+            // 
+            udSeed.Location = new Point(259, 26);
+            udSeed.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
+            udSeed.Name = "udSeed";
+            udSeed.Size = new Size(60, 27);
+            udSeed.TabIndex = 48;
+            udSeed.TextAlign = HorizontalAlignment.Right;
+            udSeed.Value = new decimal(new int[] { 2016, 0, 0, 0 });
+            udSeed.ValueChanged += udSeed_ValueChanged;
+            // 
+            // labelStatus
+            // 
+            labelStatus.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
+            labelStatus.Location = new Point(1198, 63);
+            labelStatus.Name = "labelStatus";
+            labelStatus.Size = new Size(168, 40);
+            labelStatus.TabIndex = 50;
+            labelStatus.Text = "Idle";
+            labelStatus.TextAlign = ContentAlignment.MiddleRight;
+            // 
+            // btSetDefaults
+            // 
+            btSetDefaults.Location = new Point(770, 73);
+            btSetDefaults.Name = "btSetDefaults";
+            btSetDefaults.Size = new Size(107, 29);
+            btSetDefaults.TabIndex = 55;
+            btSetDefaults.Text = "Set defaults";
+            btSetDefaults.UseVisualStyleBackColor = true;
+            btSetDefaults.Click += btSetDefaults_Click;
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1375, 952);
+            ClientSize = new Size(1379, 952);
+            Controls.Add(btSetDefaults);
+            Controls.Add(labelStatus);
             Controls.Add(linkLabel1);
             Controls.Add(linkLabel2);
             Controls.Add(groupBox4);
-            Controls.Add(groupBox3);
             Controls.Add(groupBox2);
             Controls.Add(groupBox1);
             FormBorderStyle = FormBorderStyle.FixedSingle;
@@ -476,7 +584,7 @@
             MaximizeBox = false;
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Scratchapixel value noise demo";
+            Text = "Scratchapixel's value noise 2D demo";
             FormClosing += MainForm_FormClosing;
             Load += Mainform_Load;
             Click += MainForm_Click;
@@ -487,16 +595,15 @@
             ((System.ComponentModel.ISupportInitialize)pbPerlinNoise).EndInit();
             ((System.ComponentModel.ISupportInitialize)pbMarbleNoise).EndInit();
             ((System.ComponentModel.ISupportInitialize)pbTurbNoise).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pbFractalNoise).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pbFractalValue).EndInit();
             ((System.ComponentModel.ISupportInitialize)pbValueNoise).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pbWhiteNoise).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pbFractalPerlin).EndInit();
             ((System.ComponentModel.ISupportInitialize)udFSnLayers).EndInit();
             groupBox2.ResumeLayout(false);
             groupBox2.PerformLayout();
-            groupBox3.ResumeLayout(false);
-            groupBox3.PerformLayout();
             groupBox4.ResumeLayout(false);
             groupBox4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)udSeed).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -506,9 +613,9 @@
         private PictureBox pbPerlinNoise;
         private PictureBox pbMarbleNoise;
         private PictureBox pbTurbNoise;
-        private PictureBox pbFractalNoise;
+        private PictureBox pbFractalValue;
         private PictureBox pbValueNoise;
-        private PictureBox pbWhiteNoise;
+        private PictureBox pbFractalPerlin;
         private Label label9;
         private Label label10;
         private Label Turb;
@@ -517,7 +624,6 @@
         private Label label14;
         private LinkLabel linkLabel1;
         private LinkLabel linkLabel2;
-        private FolderBrowserDialog folderBrowserDialog1;
         private TextBox tbImageWidth;
         private Label label1;
         private NumericUpDown udFSnLayers;
@@ -530,12 +636,22 @@
         private TextBox tbFSFrequency;
         private Label label2;
         private TextBox tbImageHeight;
-        private Label label6;
-        private TextBox tbPerlinScale;
         private Label label8;
-        private TextBox tbGlobalRandomSeed;
         private GroupBox groupBox2;
-        private GroupBox groupBox3;
         private GroupBox groupBox4;
+        private Label labelStatus;
+        private Panel panel1;
+        private NumericUpDown udSeed;
+        private ComboBox cbTableSize;
+        private Label label6;
+        private Button btSaveToCSV_0;
+        private Button btSetDefaults;
+        private Button btSaveToCSV_5;
+        private Button btSaveToCSV_4;
+        private Button btSaveToCSV_3;
+        private Button btSaveToCSV_2;
+        private Button btSaveToCSV_1;
+        private Panel panel2;
+        private SaveFileDialog saveFileDialog1;
     }
 }

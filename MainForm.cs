@@ -7,8 +7,9 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Windows.Forms;
-using wifitracelistener;
+//using wifitracelistener;
 using System.Threading.Tasks;
+using System.Globalization;
 
 namespace Noise2D
 {
@@ -18,16 +19,23 @@ namespace Noise2D
         System.Windows.Forms.Timer viewerFormTimer = new System.Windows.Forms.Timer();
         //wifiTraceListener myTraceListener;
 
-        int width = 1024;
-        int height = 768;
-        float frequency = 0.02f;
-        float frequencyMult = 1.8f;
-        float amplitudeMult = 0.35f;
-        int numLayers = 5;
-        float scale = 64f;
-        int seed = 2016;
+        int width;
+        int height;
+        float frequency;
+        float fBm_lacunarity;
+        float fBm_gain;
+        int numLayers;
+        int seed;
+        uint tableSize;
 
-        bool bNeedsRedraw = true;
+        bool bNeedsRedraw;
+
+        float[]? noiseBufferValue;
+        float[]? noiseBufferFractal;
+        float[]? noiseBufferTurb;
+        float[]? noiseBufferMarble;
+        float[]? noiseBufferPerlin;
+        float[]? noiseBufferFractalPerlin;
 
 
         public MainForm()
@@ -40,6 +48,8 @@ namespace Noise2D
 
             groupBox1.Click += groupBox1_Click;
 
+            labelStatus.Text = "Idle";
+            labelStatus.ForeColor = Color.Green;
         }
 
         private void RedirectMouseClick(object sender, MouseEventArgs e)
@@ -52,23 +62,53 @@ namespace Noise2D
             OnMouseClick(args);
         }
 
-
-        private void Mainform_Load(object sender, EventArgs e)
+        private void SetDefaults()
         {
+            width = 1024;
+            height = 768;
+            frequency = .01f;
+            fBm_lacunarity = 2.0f;
+            fBm_gain = 0.5f;
+            numLayers = 4;
+            seed = 2016;
+            tableSize = 256;
 
             tbImageWidth.Text = width.ToString();
             tbImageHeight.Text = height.ToString();
             tbFSFrequency.Text = frequency.ToString();
-            tbFSFrequencyMultiplier.Text = frequencyMult.ToString();
-            tbFSAmplitudeMultiplier.Text = amplitudeMult.ToString();
+            tbFSFrequencyMultiplier.Text = fBm_lacunarity.ToString();
+            tbFSAmplitudeMultiplier.Text = fBm_gain.ToString();
             udFSnLayers.Value = numLayers;
-            tbPerlinScale.Text = scale.ToString();
-            tbGlobalRandomSeed.Text = seed.ToString();
+            udSeed.Value = seed;
+            cbTableSize.Text = tableSize.ToString();
+
+            bNeedsRedraw = true;
+        }
+
+
+        private void Mainform_Load(object sender, EventArgs e)
+        {
+            SetDefaults();
 
             ResetAll();
             viewerFormTimer.Tick += ViewerFormTimer_Tick;
             viewerFormTimer.Interval = 500;
             viewerFormTimer.Start();
+
+            //valueNoise1D.TestModulo();
+        }
+
+
+        private void EnableControls(bool bDisable)
+        {
+            tbImageWidth.Enabled = bDisable;
+            tbImageHeight.Enabled = bDisable;
+            tbFSFrequency.Enabled = bDisable;
+            tbFSFrequencyMultiplier.Enabled = bDisable;
+            tbFSAmplitudeMultiplier.Enabled = bDisable;
+            udFSnLayers.Enabled = bDisable;
+            udSeed.Enabled = bDisable;
+            cbTableSize.Enabled = bDisable;
         }
 
         private void ViewerFormTimer_Tick(object? sender, EventArgs e)
@@ -97,18 +137,23 @@ namespace Noise2D
 
             if (bNeedsRedraw)
             {
-                Debug.Write("Redrawing...");
+                EnableControls(false);
+                bNeedsRedraw = false;
 
-                Bitmap? OutputImageWhite = null;
+                Debug.Write("Redrawing...");
+                labelStatus.Text = "Processing...";
+                labelStatus.ForeColor = Color.Red;
+
+                Bitmap? OutputImageFractalPerlin = null;
                 Bitmap? OutputImageValue = null;
                 Bitmap? OutputImageFractal = null;
                 Bitmap? OutputImageTurb = null;
                 Bitmap? OutputImageMarble = null;
                 Bitmap? OutputImagePerlin = null;
 
-                pbWhiteNoise.Image = null;
+                pbFractalPerlin.Image = null;
                 pbValueNoise.Image = null;
-                pbFractalNoise.Image = null;
+                pbFractalValue.Image = null;
                 pbTurbNoise.Image = null;
                 pbMarbleNoise.Image = null;
                 pbPerlinNoise.Image = null;
@@ -119,56 +164,60 @@ namespace Noise2D
                     Parallel.Invoke(
                     () =>
                     {
-                        ValueNoise valueNoise = new ValueNoise(width, height, seed);
-                        float[] noiseBufferWhite = valueNoise.GetWhiteNoiseBuffer();
-                        OutputImageWhite = RenderBWBuffer(noiseBufferWhite,  width, height);
+                        ValueNoise valueNoise = new ValueNoise(width, height, frequency, seed, tableSize);
+                        noiseBufferValue = valueNoise.GetNoiseBuffer();
+                        OutputImageValue = RenderBWBuffer(noiseBufferValue, width, height);
                     },
-                   () =>
-                   {
-                       ValueNoise valueNoise = new ValueNoise(width, height, seed);
-                       float[] noiseBufferValue = valueNoise.GetValueNoiseBuffer(frequency);
-                       OutputImageValue = RenderBWBuffer(noiseBufferValue,  width, height);
-                   },
-                   () =>
-                   {
-                       ValueNoise valueNoise = new ValueNoise(width, height, seed);
-                       float[] noiseBufferFractal = valueNoise.GetFractalNoiseBuffer(frequency, frequencyMult, amplitudeMult, numLayers);
-                       OutputImageFractal = RenderBWBuffer(noiseBufferFractal,  width, height);
-                   },
-                   () =>
-                   {
-                       ValueNoise valueNoise = new ValueNoise(width, height, seed);
-                       float[] noiseBufferTurb = valueNoise.GetTurbulenceNoiseBuffer(frequency, frequencyMult, amplitudeMult, numLayers);
-                       OutputImageTurb = RenderBWBuffer(noiseBufferTurb,  width, height);
-                   },
-                   () =>
-                   {
-                       ValueNoise valueNoise = new ValueNoise(width, height, seed);
-                       float[] noiseBufferMarble = valueNoise.GetMarbleNoiseBuffer(frequency, frequencyMult, amplitudeMult, numLayers);
-                       OutputImageMarble = RenderBWBuffer(noiseBufferMarble,  width, height);
-                   },
-                   () =>
-                   {
-                       PerlinNoise perlinNoise = new PerlinNoise(width, height, seed);
-                       float[] noiseBufferPerlin = perlinNoise.GetNoiseBuffer(scale);
-                       OutputImagePerlin = RenderBWBuffer(noiseBufferPerlin,  width, height);
-                   });
+                    () =>
+                    {
+                        ValueNoise valueNoise = new ValueNoise(width, height, frequency, seed, tableSize);
+                        noiseBufferFractal = valueNoise.GetFractalNoiseBuffer(fBm_lacunarity, fBm_gain, numLayers);
+                        OutputImageFractal = RenderBWBuffer(noiseBufferFractal, width, height);
+                    },
+                    () =>
+                    {
+                        ValueNoise valueNoise = new ValueNoise(width, height, frequency, seed, tableSize);
+                        noiseBufferTurb = valueNoise.GetTurbulenceNoiseBuffer(fBm_lacunarity, fBm_gain, numLayers);
+                        OutputImageTurb = RenderBWBuffer(noiseBufferTurb, width, height);
+                    },
+                    () =>
+                    {
+                        ValueNoise valueNoise = new ValueNoise(width, height, frequency, seed, tableSize);
+                        noiseBufferMarble = valueNoise.GetMarbleNoiseBuffer(fBm_lacunarity, fBm_gain, numLayers);
+                        OutputImageMarble = RenderBWBuffer(noiseBufferMarble, width, height);
+                    },
+                    () =>
+                    {
+                        PerlinNoise perlinNoise = new PerlinNoise(width, height, frequency, seed, tableSize);
+                        noiseBufferPerlin = perlinNoise.GetNoiseBuffer();
+                        OutputImagePerlin = RenderBWBuffer(noiseBufferPerlin, width, height);
+                    },
+                    () =>
+                    {
+                        PerlinNoise perlinNoise = new PerlinNoise(width, height, frequency, seed, tableSize);
+                        noiseBufferFractalPerlin = perlinNoise.GetFractalNoiseBuffer(fBm_lacunarity, fBm_gain, numLayers);
+                        OutputImageFractalPerlin = RenderBWBuffer(noiseBufferFractalPerlin, width, height);
+                    }
+                    );
                 }
                 catch (AggregateException ex)
                 {
                     Console.WriteLine("An action has thrown an exception. THIS WAS UNEXPECTED.\n{0}", ex.InnerException.ToString());
                 }
 
-                pbWhiteNoise.Image = OutputImageWhite;
+                pbFractalPerlin.Image = OutputImageFractalPerlin;
                 pbValueNoise.Image = OutputImageValue;
-                pbFractalNoise.Image = OutputImageFractal;
+                pbFractalValue.Image = OutputImageFractal;
                 pbTurbNoise.Image = OutputImageTurb;
                 pbMarbleNoise.Image = OutputImageMarble;
                 pbPerlinNoise.Image = OutputImagePerlin;
 
 
-                bNeedsRedraw = false;
+
                 Debug.WriteLine("Done.");
+                labelStatus.Text = "Idle";
+                labelStatus.ForeColor = Color.Green;
+                EnableControls(true);
             }
 
         }
@@ -176,9 +225,9 @@ namespace Noise2D
 
         private void ResetImages()
         {
-            pbWhiteNoise.Image = Properties.Resources.noimage;
+            pbFractalPerlin.Image = Properties.Resources.noimage;
             pbValueNoise.Image = Properties.Resources.noimage;
-            pbFractalNoise.Image = Properties.Resources.noimage;
+            pbFractalValue.Image = Properties.Resources.noimage;
             pbTurbNoise.Image = Properties.Resources.noimage;
             pbMarbleNoise.Image = Properties.Resources.noimage;
             pbPerlinNoise.Image = Properties.Resources.noimage;
@@ -217,7 +266,6 @@ namespace Noise2D
                 int nBytesLen = Math.Abs(bmpData.Stride) * bmpData.Height;
                 byte[] bwValues = new byte[nBytesLen];
 
-
                 // Copy the BW values into the array.
                 System.Runtime.InteropServices.Marshal.Copy(ptrBW, bwValues, 0, nBytesLen);
 
@@ -233,10 +281,8 @@ namespace Noise2D
                 // Copy the RGB values back to the bitmap
                 System.Runtime.InteropServices.Marshal.Copy(bwValues, 0, ptrBW, nBytesLen);
 
-
                 // Unlock the bits.
                 OutputImage.UnlockBits(bmpData);
-                //pbox.Image = OutputImage;
             }
             catch (Exception ex)
             {
@@ -245,35 +291,6 @@ namespace Noise2D
 
             return OutputImage;
         }
-
-
-
-        private void btSaveAll_Click(object sender, EventArgs e)
-        {
-            string outputFolder = "";// txtOutputFolder.Text;
-
-            try
-            {
-                if (outputFolder != "" && !Directory.Exists(outputFolder))
-                {
-                    Directory.CreateDirectory(outputFolder);
-                }
-
-
-                //if (NormalOutputImage != null)
-                //{
-                //    NormalOutputImage.Save(outputFolder + "\\" + tbPrefix.Text + "invertedG_normal.png", ImageFormat.Png);
-                //    Trace.WriteLine("SAVED: " + outputFolder + "\\" + tbPrefix.Text + "invertedG_normal.png");
-                //}
-
-            }
-            catch (Exception ex)
-            {
-                Trace.WriteLine(ex.ToString());
-            }
-        }
-
-
 
         private void ShowViewer(object sender, EventArgs e)
         {
@@ -350,7 +367,6 @@ namespace Noise2D
         }
 
 
-
         private void tbFSAmplitudeMultiplier_Validating(object sender, CancelEventArgs e)
         {
             e.Cancel = !float.TryParse(tbFSAmplitudeMultiplier.Text, out float parsed) || parsed <= 0.0f;
@@ -365,14 +381,6 @@ namespace Noise2D
             e.Cancel = !float.TryParse(tbFSFrequencyMultiplier.Text, out float parsed) || parsed <= 0.0f;
         }
 
-        private void tbPerlinScale_Validating(object sender, CancelEventArgs e)
-        {
-            e.Cancel = !float.TryParse(tbPerlinScale.Text, out float parsed) || parsed <= 0.0f;
-        }
-        private void tbGlobalRandomSeed_Validating(object sender, CancelEventArgs e)
-        {
-            e.Cancel = !int.TryParse(tbGlobalRandomSeed.Text, out int parsed) || parsed <= 0;
-        }
         private void tbImageWidth_Validating(object sender, CancelEventArgs e)
         {
             e.Cancel = !int.TryParse(tbImageWidth.Text, out int parsed) || parsed <= 0;
@@ -392,13 +400,12 @@ namespace Noise2D
                 bNeedsRedraw = true;
             }
         }
-
         private void tbFSFrequencyMultiplier_Validated(object sender, EventArgs e)
         {
             float _frequencyMult = float.Parse(tbFSFrequencyMultiplier.Text);
-            if (_frequencyMult != frequencyMult)
+            if (_frequencyMult != fBm_lacunarity)
             {
-                frequencyMult = _frequencyMult;
+                fBm_lacunarity = _frequencyMult;
                 bNeedsRedraw = true;
             }
         }
@@ -406,14 +413,12 @@ namespace Noise2D
         private void tbFSAmplitudeMultiplier_Validated(object sender, EventArgs e)
         {
             float _amplitudeMult = float.Parse(tbFSAmplitudeMultiplier.Text);
-            if (_amplitudeMult != amplitudeMult)
+            if (_amplitudeMult != fBm_gain)
             {
-                amplitudeMult = _amplitudeMult;
+                fBm_gain = _amplitudeMult;
                 bNeedsRedraw = true;
             }
         }
-
-
         private void udFSnLayers_ValueChanged(object sender, EventArgs e)
         {
             int _numLayers = (int)udFSnLayers.Value;
@@ -424,19 +429,9 @@ namespace Noise2D
             }
         }
 
-        private void tbPerlinScale_Validated(object sender, EventArgs e)
+        private void udSeed_ValueChanged(object sender, EventArgs e)
         {
-            float _scale = float.Parse(tbPerlinScale.Text);
-            if (_scale != scale)
-            {
-                scale = _scale;
-                bNeedsRedraw = true;
-            }
-        }
-
-        private void tbGlobalRandomSeed_Validated(object sender, EventArgs e)
-        {
-            int _seed = int.Parse(tbGlobalRandomSeed.Text);
+            int _seed = (int)udSeed.Value;
             if (_seed != seed)
             {
                 seed = _seed;
@@ -453,7 +448,6 @@ namespace Noise2D
                 bNeedsRedraw = true;
             }
         }
-
         private void tbImageHeight_Validated(object sender, EventArgs e)
         {
             int _height = int.Parse(tbImageHeight.Text);
@@ -462,6 +456,89 @@ namespace Noise2D
                 height = _height;
                 bNeedsRedraw = true;
             }
+        }
+
+        private void cbTableSize_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            uint _tableSize = uint.Parse(cbTableSize.Text);
+            if (_tableSize != tableSize)
+            {
+                tableSize = _tableSize;
+                bNeedsRedraw = true;
+            }
+        }
+
+        private void btSaveToCSV_Click(object sender, EventArgs e)
+        {
+            CultureInfo cultureUS = new CultureInfo("en-US");
+            float[]? bufferToExport = null;
+            string tag = (string)((Control)sender).Tag;
+
+            switch (int.Parse(tag))
+            {
+                case 0:
+                    bufferToExport = noiseBufferValue;
+                    break;
+                case 1:
+                    bufferToExport = noiseBufferTurb;
+                    break;
+                case 2:
+                    bufferToExport = noiseBufferPerlin;
+                    break;
+                case 3:
+                    bufferToExport = noiseBufferFractal;
+                    break;
+                case 4:
+                    bufferToExport = noiseBufferMarble;
+                    break;
+                case 5:
+                    bufferToExport = noiseBufferFractalPerlin;
+                    break;
+            }
+
+            try
+            {
+                saveFileDialog1.Filter = "Csv files (*.csv)|*.csv";
+                saveFileDialog1.RestoreDirectory = true;
+
+                if (bufferToExport != null && DialogResult.OK == saveFileDialog1.ShowDialog())
+                {
+                    FileStream fs = new FileStream(saveFileDialog1.FileName, FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
+                    StreamWriter sw = new StreamWriter(fs);
+
+                    sw.WriteLine($"#y=linspace(0,{height},{height});");
+                    sw.WriteLine($"#x=linspace(0,{width},{width});");
+                    sw.WriteLine($"#[XX,YY]=meshgrid(x,y);");
+                    sw.WriteLine($"#surf(XX,YY,{Path.GetFileNameWithoutExtension(saveFileDialog1.FileName)});");
+
+
+                    for (int idxHeight = 0; idxHeight < height; idxHeight++)
+                    {
+                        string line = "";
+                        for (int idxWidth = 0; idxWidth < width; idxWidth++)
+                        {
+                            line += bufferToExport[idxHeight*width + idxWidth].ToString("F7", cultureUS) + ",";
+                        }
+                        line = line.Trim([',']);
+                        sw.WriteLine(line);
+                    }
+                    sw.Close();
+                    fs.Close();
+
+            
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine(ex.ToString());
+            }
+        }
+
+
+
+        private void btSetDefaults_Click(object sender, EventArgs e)
+        {
+            SetDefaults();
         }
     }
 }

@@ -28,43 +28,34 @@ using System;
 
 namespace Noise2D;
 
-public class ValueNoise
+
+public class ValueNoise : BaseNoise
 {
+    float[] r;
 
-    public const uint kMaxTableSize = 256;
-    public static uint kMaxTableSizeMask = kMaxTableSize - 1;
-    public float[] r = new float[kMaxTableSize];
-    public uint[] permutationTable = new uint[kMaxTableSize * 2];
-    int width, height;
-    Random? gen = null;
-
-    public ValueNoise(int _width, int _height, int seed = 2016)
+    public ValueNoise(int _width, int _height, float _frequency, int _seed, uint _tableSize) : base(_width, _height, _frequency, _seed, _tableSize)
     {
         width = _width;
         height = _height;
-        gen = new Random(seed);
+        seed = _seed;
+        frequency = _frequency;
+
+        r = new float[tableSize];
+
+        Random gen = new Random(seed);
 
         // create an array of random values and initialize permutation table
-        for (uint k = 0; k < kMaxTableSize; ++k)
+        for (int k = 0; k < tableSize; ++k)
         {
             r[k] = gen.NextSingle();
             permutationTable[k] = k;
         }
 
-        // shuffle values of the permutation table
-        for (uint k = 0; k < kMaxTableSize; ++k)
-        {
-            uint i = (uint)(gen.Next() & kMaxTableSizeMask);
-            uint temp = permutationTable[k];
-            permutationTable[k] = permutationTable[i];
-            permutationTable[i] = temp;
-            //std::swap(permutationTable[k], permutationTable[i]);
-            permutationTable[k + kMaxTableSize] = permutationTable[k];
-        }
+        SetPermutationTable(gen);
     }
+    
 
-
-    public float eval(Vec2f p)
+    public float eval2(Vec2f p)
     {
         int xi = (int)Math.Floor(p.x);
         int yi = (int)Math.Floor(p.y);
@@ -72,10 +63,10 @@ public class ValueNoise
         float tx = p.x - xi;
         float ty = p.y - yi;
 
-        int rx0 = (int)(xi & kMaxTableSizeMask);
-        int rx1 = (int)((rx0 + 1) & kMaxTableSizeMask);
-        int ry0 = (int)(yi & kMaxTableSizeMask);
-        int ry1 = (int)((ry0 + 1) & kMaxTableSizeMask);
+        int rx0 = (int)(xi & tableSizeMask);
+        int rx1 = (int)((rx0 + 1) & tableSizeMask);
+        int ry0 = (int)(yi & tableSizeMask);
+        int ry1 = (int)((ry0 + 1) & tableSizeMask);
 
         // random values at the corners of the cell using permutation table
         float c00 = r[permutationTable[permutationTable[rx0] + ry0]];
@@ -96,13 +87,12 @@ public class ValueNoise
     }
 
 
-
-
     public float[] GetWhiteNoiseBuffer()
     {
         int imageWidth = width;
         int imageHeight = height;
         float[] noiseMap = new float[imageWidth * imageHeight];
+        Random gen = new Random(seed);
 
         // Generate white noise
         for (int j = 0; j < imageHeight; ++j)
@@ -114,78 +104,70 @@ public class ValueNoise
             }
         }
 
-        return noiseMap;
+        return NormalizeBuffer(noiseMap);
     }
 
-    public float[] GetValueNoiseBuffer(float frequency)
+    public float[] GetNoiseBuffer()
     {
         int imageWidth = width;
         int imageHeight = height;
         float[] noiseMap = new float[imageWidth * imageHeight];
 
         // Generate value noise
-        //float frequency = 0.05f;
-
         for (int j = 0; j < imageHeight; ++j)
         {
             for (int i = 0; i < imageWidth; ++i)
             {
                 // generate a float in the range [0:1]
-                noiseMap[j * imageWidth + i] = eval(new Vec2f(i, j).mult(frequency));
+                noiseMap[j * imageWidth + i] = eval2(new Vec2f(i, j).mult(frequency));
             }
         }
-        return noiseMap;
+        return NormalizeBuffer(noiseMap);
     }
 
-    public float[] GetFractalNoiseBuffer(float frequency, float frequencyMult, float amplitudeMult, int numLayers)
+    public float[] GetFractalNoiseBuffer(float fBm_lacunarity, float fBm_gain, int numLayers)
     {
         int imageWidth = width;
         int imageHeight = height;
         float[] noiseMap = new float[imageWidth * imageHeight];
 
-        // Generate fractal pattern
-        //float frequency = 0.02f;
-        //float frequencyMult = 1.8f;
-        //float amplitudeMult = 0.35f;
-        //int numLayers = 5;
 
-
-        float maxNoiseVal = 0;
+        float maxNoiseVal = 0.0f;
         for (int j = 0; j < imageHeight; ++j)
         {
             for (int i = 0; i < imageWidth; ++i)
             {
                 Vec2f pNoise = new Vec2f(i, j) * frequency;
-                float amplitude = 1;
+                float amplitude = 1.0f;
                 for (int l = 0; l < numLayers; ++l)
                 {
-                    noiseMap[j * imageWidth + i] += eval(pNoise) * amplitude;
-                    pNoise *= frequencyMult;
-                    amplitude *= amplitudeMult;
+                    noiseMap[j * imageWidth + i] += eval2(pNoise) * amplitude;
+                    pNoise *= fBm_lacunarity;
+                    amplitude *= fBm_gain;
                 }
-                if (noiseMap[j * imageWidth + i] > maxNoiseVal) 
+                if (noiseMap[j * imageWidth + i] > maxNoiseVal)
                     maxNoiseVal = noiseMap[j * imageWidth + i];
             }
         }
-        for (int i = 0; i < imageWidth * imageHeight; ++i)
-            noiseMap[i] /= maxNoiseVal;
+        //for (int i = 0; i < imageWidth * imageHeight; ++i)
+        //    noiseMap[i] /= maxNoiseVal;
 
-        return noiseMap;
+        return NormalizeBuffer(noiseMap);
     }
 
-    public float[] GetTurbulenceNoiseBuffer(float frequency, float frequencyMult, float amplitudeMult, int numLayers)
+    public float[] GetTurbulenceNoiseBuffer(float fBm_lacunarity, float fBm_gain, int numLayers)
     {
         int imageWidth = width;
         int imageHeight = height;
         float[] noiseMap = new float[imageWidth * imageHeight];
 
         // Generate turbulence pattern
-        //float frequency = 0.02f;
-        //float frequencyMult = 1.8f;
-        //float amplitudeMult = 0.35f;
+        ////float frequency = 0.02f;
+        //float fBm_lacunarity = 1.8f;
+        //float fBm_gain = 0.35f;
         //int numLayers = 5;
 
-        float maxNoiseVal = 0;
+        float maxNoiseVal = 0.0f;
         for (int j = 0; j < imageHeight; ++j)
         {
             for (int i = 0; i < imageWidth; ++i)
@@ -194,28 +176,29 @@ public class ValueNoise
                 float amplitude = 1;
                 for (int l = 0; l < numLayers; ++l)
                 {
-                    noiseMap[j * imageWidth + i] += Math.Abs(2.0f * eval(pNoise) - 1) * amplitude;
-                    pNoise *= frequencyMult;
-                    amplitude *= amplitudeMult;
+                    noiseMap[j * imageWidth + i] += Math.Abs(2.0f * eval2(pNoise) - 1) * amplitude;
+                    pNoise *= fBm_lacunarity;
+                    amplitude *= fBm_gain;
                 }
                 if (noiseMap[j * imageWidth + i] > maxNoiseVal) maxNoiseVal = noiseMap[j * imageWidth + i];
             }
         }
-        for (int i = 0; i < imageWidth * imageHeight; ++i) noiseMap[i] /= maxNoiseVal;
 
-        return noiseMap;
+        //for (int i = 0; i < imageWidth * imageHeight; ++i) noiseMap[i] /= maxNoiseVal;
+
+        return NormalizeBuffer(noiseMap);
     }
 
-    public float[] GetMarbleNoiseBuffer(float frequency, float frequencyMult, float amplitudeMult, int numLayers)
+    public float[] GetMarbleNoiseBuffer(float fBm_lacunarity, float fBm_gain, int numLayers)
     {
         int imageWidth = width;
         int imageHeight = height;
         float[] noiseMap = new float[imageWidth * imageHeight];
 
         // Generate marble pattern
-        //float frequency = 0.02f;
-        //float frequencyMult = 1.8f;
-        //float amplitudeMult = 0.35f;
+        ////float frequency = 0.02f;
+        //float fBm_lacunarity = 1.8f;
+        //float fBm_gain = 0.35f;
         //int numLayers = 5;
 
 
@@ -229,14 +212,14 @@ public class ValueNoise
                 // compute some fractal noise
                 for (int l = 0; l < numLayers; ++l)
                 {
-                    noiseValue += eval(pNoise) * amplitude;
-                    pNoise *= frequencyMult;
-                    amplitude *= amplitudeMult;
+                    noiseValue += eval2(pNoise) * amplitude;
+                    pNoise *= fBm_lacunarity;
+                    amplitude *= fBm_gain;
                 }
                 // we "displace" the value i used in the sin() expression by noiseValue * 100
                 noiseMap[j * imageWidth + i] = (float)(Math.Sin((i + noiseValue * 100.0f) * 2 * Math.PI / 200.0f) + 1.0f) / 2.0f;
             }
         }
-        return noiseMap;
+        return NormalizeBuffer(noiseMap);
     }
 }

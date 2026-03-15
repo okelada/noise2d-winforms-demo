@@ -117,29 +117,31 @@ public static class NoiseGlobals
     public static float dot(in Vec3f a, in Vec3f b)
     {
         return a.x * b.x + a.y * b.y + a.z * b.z;
-    }
+    } 
+    
+    public delegate float Interpolator(in float lo, in float hi,in float t);
     public static float lerp(in float lo, in float hi, in float t)
     {
         return lo * (1.0f - t) + hi * t;
     }
 
-    // The smoothstep function
-    public static float smoothstep(in float t)
+    public delegate float Smoother(in float t);
+    public static float smoothstep( in float t)
     {
         return t * t * (3.0f - 2.0f * t);
     }
 
-    public static float quintic(in float t)
+    public static float quintic( in float t)
     {
         return t * t * t * (t * (t * 6.0f - 15.0f) + 10.0f);
     }
 
-    public static float smoothstepDeriv(in float t)
+    public static float smoothstepDeriv( in float t)
     {
         return t * (6.0f - 6.0f * t);
     }
 
-    public static float quinticDeriv(in float t)
+    public static float quinticDeriv( in float t)
     {
         return 30.0f * t * t * (t * (t - 2.0f) + 1.0f);
     }

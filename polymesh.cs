@@ -23,6 +23,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+#define ANALYTICAL_NORMALS
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,7 +45,54 @@ internal class PolyMesh
     public uint numVertices = new uint();
     public uint numFaces;
 
-    public static PolyMesh createPolyMesh(
+    internal PolyMesh createRandomPolyMesh(uint width,
+                               uint height,
+                               uint subdivisionWidth,
+                               uint subdivisionHeight,float frequency, int seed, uint tablesize)
+    {
+        PolyMesh poly = PolyMesh.createFlatPolyMesh(width, height, subdivisionWidth, subdivisionHeight);
+       
+        // displace and compute analytical normal using noise function partial derivatives
+        PerlinNoise perlinNoise = new PerlinNoise((int)subdivisionWidth+1, (int)subdivisionHeight+1, frequency,seed, tablesize);
+
+        for (int i = 0; i < poly.numVertices; ++i)
+        {
+            Vec3f p = new Vec3f((poly.vertices[i].x + 0.5f), 0.0f, (poly.vertices[i].z + 0.5f)) * frequency;
+            poly.vertices[i].y = perlinNoise.eval3(p, out Vec3f derivs);
+
+#if ANALYTICAL_NORMALS
+            Vec3f tangent = new Vec3f(1.0f, derivs.x, 0.0f); // tangent
+            Vec3f bitangent = new Vec3f(0.0f, derivs.z, 1.0f); // bitangent
+                                                               // equivalent to bitangent.cross(tangent)
+            poly.normals[i] = new Vec3f(-derivs.x, 1.0f, -derivs.z);
+            poly.normals[i].normalize();
+
+#endif
+        }
+
+#if !ANALYTICAL_NORMALS
+        // compute face normal if you want
+        for (uint k = 0, off = 0; k < poly.numFaces; ++k)
+        {
+            uint nverts = poly.faceArray[k];
+            Vec3f va = poly.vertices[poly.verticesArray[off]];
+            Vec3f vb = poly.vertices[poly.verticesArray[off + 1]];
+            Vec3f vc = poly.vertices[poly.verticesArray[off + nverts - 1]];
+
+            Vec3f tangent = vb - va;
+            Vec3f bitangent = vc - va;
+
+            poly.normals[poly.verticesArray[off]] = bitangent.cross(tangent);
+            poly.normals[poly.verticesArray[off]].normalize();
+
+            off += nverts;
+        }
+#endif
+
+        return poly;
+    }
+
+    public static PolyMesh createFlatPolyMesh(
        uint width = 1,
        uint height = 1,
        uint subdivisionWidth = 40,

@@ -1,5 +1,5 @@
 # noise2d-winforms-demo
-c# version of scratchapixel Value/Perlin 2D noise tutorials for Winforms
+Winforms c# version of scratchapixel's Value/Perlin 2D noise tutorials.
 
 quick and dirty, FWIW
 

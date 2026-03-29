@@ -12,11 +12,29 @@ namespace Noise2D
         int height;
         private int _overlap;
 
-        public SeamlessOverlap(int width, int height, int overlap)
+        public delegate float OvlpInterpDelegate(float x, float x0, float dist);
+        OvlpInterpDelegate OvlpInterpHandler = OvlpInterp1;
+
+        public SeamlessOverlap(int width, int height, int overlap, OvlpInterpDelegate _OvlpInterp)
         {
             this.width = width;
             this.height = height;
             this._overlap = overlap;
+            OvlpInterpHandler = _OvlpInterp;
+        }
+
+        public static float OvlpInterp1(float x, float x0, float dist)
+        {
+            return (x - x0) / dist;
+        }
+        public static float OvlpInterp3(float x, float x0, float dist)
+        {
+            return NoiseGlobals.smoothstep((x - x0) / dist);
+        }
+
+        public static float OvlpInterp5(float x, float x0, float dist)
+        {
+            return NoiseGlobals.quintic((x - x0) / dist);
         }
 
         public float[] GetSeamlessBufferUpper(float[] baseBuffer, out int outImageWidth, out int outImageHeight)
@@ -72,7 +90,7 @@ namespace Noise2D
 
 
                         if (outputCol >= (ci - overlap) && outputCol <= (ci + overlap))
-                            blendFactor = 1.0f - (float)(outputCol - (ci - overlap)) / (2.0f * overlap);
+                            blendFactor = 1.0f - OvlpInterpHandler( outputCol , ci - overlap , 2.0f * overlap);
 
                         seamlessBuffer[pos] = seamlessBuffer[pos] * (blendFactor) + baseBuffer[j * width + i] * (1.0f - blendFactor);
                     }
@@ -132,7 +150,7 @@ namespace Noise2D
                         int outputCol = i - width / 2;
 
                         if (outputCol > (ci - overlap) && outputCol <= (ci + overlap))
-                            blendFactor = (float)(outputCol - (ci - overlap)) / (2.0f * overlap);
+                            blendFactor = OvlpInterpHandler(outputCol, ci - overlap, 2.0f * overlap);
 
                         seamlessBuffer[pos] = seamlessBuffer[pos] * (blendFactor) + baseBuffer[j * width + i] * (1.0f - blendFactor);
                     }
@@ -196,7 +214,7 @@ namespace Noise2D
 
 
                         if (outputRow >= (cj - overlap) && outputRow < (cj + overlap))
-                            blendFactor = 1.0f - (float)(outputRow - (cj - overlap)) / (2.0f * overlap);
+                            blendFactor = 1.0f - OvlpInterpHandler(outputRow, cj - overlap, 2.0f * overlap);
 
                         seamlessBuffer[pos] = seamlessBuffer[pos] * (blendFactor) + seamlessBufferLower[j * outImageWidthL + i] * (1.0f - blendFactor);
                     }

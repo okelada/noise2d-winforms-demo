@@ -74,6 +74,8 @@
             tbImageHeight = new TextBox();
             groupBox2 = new GroupBox();
             groupBox4 = new GroupBox();
+            label12 = new Label();
+            cbOvlpInterpolator = new ComboBox();
             tbSeamlessOvlp = new TextBox();
             label11 = new Label();
             cbTableSize = new ComboBox();
@@ -412,7 +414,7 @@
             // 
             // btMakeSeamless
             // 
-            btMakeSeamless.Location = new Point(919, 74);
+            btMakeSeamless.Location = new Point(963, 74);
             btMakeSeamless.Name = "btMakeSeamless";
             btMakeSeamless.Size = new Size(131, 27);
             btMakeSeamless.TabIndex = 62;
@@ -583,7 +585,7 @@
             groupBox2.Controls.Add(label7);
             groupBox2.Controls.Add(label5);
             groupBox2.Controls.Add(udFSnLayers);
-            groupBox2.Location = new Point(524, 9);
+            groupBox2.Location = new Point(568, 9);
             groupBox2.Name = "groupBox2";
             groupBox2.Size = new Size(383, 94);
             groupBox2.TabIndex = 52;
@@ -592,6 +594,8 @@
             // 
             // groupBox4
             // 
+            groupBox4.Controls.Add(label12);
+            groupBox4.Controls.Add(cbOvlpInterpolator);
             groupBox4.Controls.Add(tbSeamlessOvlp);
             groupBox4.Controls.Add(label11);
             groupBox4.Controls.Add(cbTableSize);
@@ -604,14 +608,34 @@
             groupBox4.Controls.Add(label2);
             groupBox4.Location = new Point(12, 9);
             groupBox4.Name = "groupBox4";
-            groupBox4.Size = new Size(506, 94);
+            groupBox4.Size = new Size(550, 94);
             groupBox4.TabIndex = 54;
             groupBox4.TabStop = false;
             groupBox4.Text = "Global";
             // 
+            // label12
+            // 
+            label12.AutoSize = true;
+            label12.Location = new Point(344, 61);
+            label12.Name = "label12";
+            label12.Size = new Size(86, 20);
+            label12.TabIndex = 57;
+            label12.Text = "Ovlp interp.";
+            // 
+            // cbOvlpInterpolator
+            // 
+            cbOvlpInterpolator.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbOvlpInterpolator.FormattingEnabled = true;
+            cbOvlpInterpolator.Items.AddRange(new object[] { "Linear", "Smoothstep", "Smootherstep" });
+            cbOvlpInterpolator.Location = new Point(436, 59);
+            cbOvlpInterpolator.Name = "cbOvlpInterpolator";
+            cbOvlpInterpolator.Size = new Size(108, 28);
+            cbOvlpInterpolator.TabIndex = 56;
+            cbOvlpInterpolator.SelectedIndexChanged += cbOvlpInterpolator_SelectedIndexChanged;
+            // 
             // tbSeamlessOvlp
             // 
-            tbSeamlessOvlp.Location = new Point(436, 26);
+            tbSeamlessOvlp.Location = new Point(484, 26);
             tbSeamlessOvlp.Name = "tbSeamlessOvlp";
             tbSeamlessOvlp.Size = new Size(60, 27);
             tbSeamlessOvlp.TabIndex = 54;
@@ -623,7 +647,7 @@
             // label11
             // 
             label11.AutoSize = true;
-            label11.Location = new Point(327, 28);
+            label11.Location = new Point(344, 28);
             label11.Name = "label11";
             label11.Size = new Size(103, 20);
             label11.TabIndex = 55;
@@ -672,7 +696,7 @@
             // 
             // btSetDefaults
             // 
-            btSetDefaults.Location = new Point(919, 26);
+            btSetDefaults.Location = new Point(963, 26);
             btSetDefaults.Name = "btSetDefaults";
             btSetDefaults.Size = new Size(107, 29);
             btSetDefaults.TabIndex = 55;
@@ -777,5 +801,7 @@
         private Button button6;
         private Button button5;
         private Button button4;
+        private ComboBox cbOvlpInterpolator;
+        private Label label12;
     }
 }

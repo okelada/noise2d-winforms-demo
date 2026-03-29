@@ -4,7 +4,7 @@ Winforms c# version of scratchapixel's Value/Perlin 2D noise tutorials.
 Supports seamless texture generation.
 
 <br/>
-![Example of seamless fractal terrain.](/artwork/Captura%20de%20pantalla%202026-03-29%20201205.png)
+![Example of seamless fractal terrain.](/artwork/terrain.png)
 
 
 # References:

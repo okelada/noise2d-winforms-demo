@@ -5,6 +5,9 @@ Mostly for terrain generation.
 
 Added seamless texture generation.
 
+
+![Capture.](/artwork/Capture.jpg)
+
 <br/>
 View from octave:
 

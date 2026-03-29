@@ -218,8 +218,8 @@ namespace Noise2D
                         if (bMakeSeamless)
                         {
                             SeamlessOverlap seamless = new SeamlessOverlap(width, height, seamlessOvlp);
-                            noiseBufferFractal = seamless.GetSeamlessBuffer(noiseBufferTurb, out int outImageWidth, out int outImageHeight);
-                            OutputImageTurb = RenderBWBuffer(noiseBufferFractal, outImageWidth, outImageHeight);
+                            noiseBufferTurb = seamless.GetSeamlessBuffer(noiseBufferTurb, out int outImageWidth, out int outImageHeight);
+                            OutputImageTurb = RenderBWBuffer(noiseBufferTurb, outImageWidth, outImageHeight);
                         }
                         else
                             OutputImageTurb = RenderBWBuffer(noiseBufferTurb, width, height);

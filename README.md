@@ -1,9 +1,10 @@
 # noise2d-winforms-demo
 Winforms c# version of scratchapixel's Value/Perlin 2D noise tutorials.
-
-Supports seamless texture generation.
+Mostly for terrain generation.
+Added seamless texture generation.
 
 <br/>
+View from octave:
 
 ![Example of seamless fractal terrain.](/artwork/terrain.png)
 

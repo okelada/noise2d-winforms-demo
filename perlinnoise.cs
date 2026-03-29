@@ -290,8 +290,5 @@ public class PerlinNoise : BaseNoise
 
         return NormalizeBuffer(noiseMap);
     }
-
-
-
 }
 

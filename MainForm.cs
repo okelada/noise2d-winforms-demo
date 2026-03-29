@@ -1,4 +1,7 @@
-﻿using Microsoft.VisualBasic.Logging;
+﻿//#define USE_DEBUG_SEAMLESS
+
+
+using Microsoft.VisualBasic.Logging;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -6,10 +9,11 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Windows.Forms;
+using System.Globalization;
+using System.Threading.Channels;
 //using wifitracelistener;
 using System.Threading.Tasks;
-using System.Globalization;
+using System.Windows.Forms;
 
 namespace Noise2D
 {
@@ -27,7 +31,9 @@ namespace Noise2D
         int numLayers;
         int seed;
         uint tableSize;
+        int seamlessOvlp;
 
+        bool bMakeSeamless;
         bool bNeedsRedraw;
 
         float[]? noiseBufferValue;
@@ -37,6 +43,14 @@ namespace Noise2D
         float[]? noiseBufferPerlin;
         float[]? noiseBufferFractalPerlin;
 
+        float[]? testPatternBuffer;
+
+        Bitmap? OutputImageFractalPerlin = null;
+        Bitmap? OutputImageValue = null;
+        Bitmap? OutputImageFractal = null;
+        Bitmap? OutputImageTurb = null;
+        Bitmap? OutputImageMarble = null;
+        Bitmap? OutputImagePerlin = null;
 
         public MainForm()
         {
@@ -69,9 +83,11 @@ namespace Noise2D
             frequency = .01f;
             fBm_lacunarity = 2.0f;
             fBm_gain = 0.5f;
+
             numLayers = 4;
             seed = 2016;
             tableSize = 256;
+            seamlessOvlp = 32;
 
             tbImageWidth.Text = width.ToString();
             tbImageHeight.Text = height.ToString();
@@ -81,8 +97,13 @@ namespace Noise2D
             udFSnLayers.Value = numLayers;
             udSeed.Value = seed;
             cbTableSize.Text = tableSize.ToString();
+            tbSeamlessOvlp.Text = seamlessOvlp.ToString();
 
+            bMakeSeamless = false;
             bNeedsRedraw = true;
+#if USE_DEBUG_SEAMLESS
+            testPatternBuffer = GetTestPattern(false);
+#endif
         }
 
 
@@ -94,7 +115,6 @@ namespace Noise2D
             viewerFormTimer.Tick += ViewerFormTimer_Tick;
             viewerFormTimer.Interval = 500;
             viewerFormTimer.Start();
-
             //valueNoise1D.TestModulo();
         }
 
@@ -143,14 +163,6 @@ namespace Noise2D
                 Debug.Write("Redrawing...");
                 labelStatus.Text = "Processing...";
                 labelStatus.ForeColor = Color.Red;
-
-                Bitmap? OutputImageFractalPerlin = null;
-                Bitmap? OutputImageValue = null;
-                Bitmap? OutputImageFractal = null;
-                Bitmap? OutputImageTurb = null;
-                Bitmap? OutputImageMarble = null;
-                Bitmap? OutputImagePerlin = null;
-
                 ResetImages();
 
                 try
@@ -158,39 +170,119 @@ namespace Noise2D
                     Parallel.Invoke(
                     () =>
                     {
+#if USE_DEBUG_SEAMLESS
+                        OutputImageValue = RenderBWBuffer(testPatternBuffer, width, height);
+#else
                         ValueNoise valueNoise = new ValueNoise(width, height, frequency, seed, tableSize);
                         noiseBufferValue = valueNoise.GetNoiseBuffer();
-                        OutputImageValue = RenderBWBuffer(noiseBufferValue, width, height);
+
+                        if (bMakeSeamless)
+                        {
+                            SeamlessOverlap seamless = new SeamlessOverlap(width, height, seamlessOvlp);
+                            noiseBufferValue = seamless.GetSeamlessBuffer(noiseBufferValue, out int outImageWidth, out int outImageHeight);
+                            OutputImageValue = RenderBWBuffer(noiseBufferValue, outImageWidth, outImageHeight);
+                        }
+                        else
+                            OutputImageValue = RenderBWBuffer(noiseBufferValue, width, height);
+#endif
                     },
                     () =>
                     {
                         ValueNoise valueNoise = new ValueNoise(width, height, frequency, seed, tableSize);
                         noiseBufferFractal = valueNoise.GetFractalNoiseBuffer(fBm_lacunarity, fBm_gain, numLayers);
-                        OutputImageFractal = RenderBWBuffer(noiseBufferFractal, width, height);
+                        if (bMakeSeamless)
+                        {
+                            SeamlessOverlap seamless = new SeamlessOverlap(width, height, seamlessOvlp);
+                            noiseBufferFractal = seamless.GetSeamlessBuffer(noiseBufferFractal, out int outImageWidth, out int outImageHeight);
+                            OutputImageFractal = RenderBWBuffer(noiseBufferFractal, outImageWidth, outImageHeight);
+                        }
+                        else
+                            OutputImageFractal = RenderBWBuffer(noiseBufferFractal, width, height);
+
+
                     },
                     () =>
                     {
+#if USE_DEBUG_SEAMLESS
+                        SeamlessOverlap seamless = new SeamlessOverlap(width, height, seamlessOvlp);
+                        float[] seamlessBufferUpper = seamless.GetSeamlessBufferUpper(testPatternBuffer, out int outImageWidthU, out int outImageHeightU);
+
+                        seamlessBufferUpper = BaseNoise.NormalizeBuffer(seamlessBufferUpper);
+                        OutputImageTurb = RenderBWBuffer(seamlessBufferUpper, outImageWidthU, outImageHeightU);
+                        pbTurbNoise.Image = OutputImageTurb;
+
+#else
+
                         ValueNoise valueNoise = new ValueNoise(width, height, frequency, seed, tableSize);
                         noiseBufferTurb = valueNoise.GetTurbulenceNoiseBuffer(fBm_lacunarity, fBm_gain, numLayers);
-                        OutputImageTurb = RenderBWBuffer(noiseBufferTurb, width, height);
+                        if (bMakeSeamless)
+                        {
+                            SeamlessOverlap seamless = new SeamlessOverlap(width, height, seamlessOvlp);
+                            noiseBufferFractal = seamless.GetSeamlessBuffer(noiseBufferTurb, out int outImageWidth, out int outImageHeight);
+                            OutputImageTurb = RenderBWBuffer(noiseBufferFractal, outImageWidth, outImageHeight);
+                        }
+                        else
+                            OutputImageTurb = RenderBWBuffer(noiseBufferTurb, width, height);
+ #endif
                     },
                     () =>
                     {
+
+#if USE_DEBUG_SEAMLESS
+
+                        SeamlessOverlap seamless = new SeamlessOverlap(width, height, seamlessOvlp);
+                        float[] seamlessBufferLower = seamless.GetSeamlessBufferLower(testPatternBuffer, out int outImageWidthL, out int outImageHeightL);
+                        seamlessBufferLower = BaseNoise.NormalizeBuffer(seamlessBufferLower);
+                        OutputImageMarble = RenderBWBuffer(seamlessBufferLower, outImageWidthL, outImageHeightL);
+                        pbMarbleNoise.Image = OutputImageMarble;
+#else
+
+
+
                         ValueNoise valueNoise = new ValueNoise(width, height, frequency, seed, tableSize);
                         noiseBufferMarble = valueNoise.GetMarbleNoiseBuffer(fBm_lacunarity, fBm_gain, numLayers);
-                        OutputImageMarble = RenderBWBuffer(noiseBufferMarble, width, height);
+                        if (bMakeSeamless)
+                        {
+                            SeamlessOverlap seamless = new SeamlessOverlap(width, height, seamlessOvlp);
+                            noiseBufferMarble = seamless.GetSeamlessBuffer(noiseBufferMarble, out int outImageWidth, out int outImageHeight);
+                            OutputImageMarble = RenderBWBuffer(noiseBufferMarble, outImageWidth, outImageHeight);
+                        }
+                        else
+                            OutputImageMarble = RenderBWBuffer(noiseBufferMarble, width, height);
+#endif
                     },
                     () =>
                     {
                         PerlinNoise perlinNoise = new PerlinNoise(width, height, frequency, seed, tableSize);
                         noiseBufferPerlin = perlinNoise.GetNoiseBuffer();
-                        OutputImagePerlin = RenderBWBuffer(noiseBufferPerlin, width, height);
+                        if (bMakeSeamless)
+                        {
+                            SeamlessOverlap seamless = new SeamlessOverlap(width, height, seamlessOvlp);
+                            noiseBufferPerlin = seamless.GetSeamlessBuffer(noiseBufferPerlin, out int outImageWidth, out int outImageHeight);
+                            OutputImagePerlin = RenderBWBuffer(noiseBufferPerlin, outImageWidth, outImageHeight);
+                        }
+                        else
+                            OutputImagePerlin = RenderBWBuffer(noiseBufferPerlin, width, height);
                     },
                     () =>
                     {
+#if USE_DEBUG_SEAMLESS 
+                        SeamlessOverlap seamless = new SeamlessOverlap(width, height, seamlessOvlp);
+                        float[] seamlessBuffer = seamless.GetSeamlessBuffer(testPatternBuffer, out int outImageWidth, out int outImageHeight);
+                        seamlessBuffer = BaseNoise.NormalizeBuffer(seamlessBuffer);
+                        OutputImageFractalPerlin = RenderBWBuffer(seamlessBuffer, outImageWidth, outImageHeight);
+#else
                         PerlinNoise perlinNoise = new PerlinNoise(width, height, frequency, seed, tableSize);
                         noiseBufferFractalPerlin = perlinNoise.GetFractalNoiseBuffer(fBm_lacunarity, fBm_gain, numLayers);
-                        OutputImageFractalPerlin = RenderBWBuffer(noiseBufferFractalPerlin, width, height);
+                        if (bMakeSeamless)
+                        {
+                            SeamlessOverlap seamless = new SeamlessOverlap(width, height, seamlessOvlp);
+                            noiseBufferFractalPerlin = seamless.GetSeamlessBuffer(noiseBufferFractalPerlin, out int outImageWidth, out int outImageHeight);
+                            OutputImageFractalPerlin = RenderBWBuffer(noiseBufferFractalPerlin, outImageWidth, outImageHeight);
+                        }
+                        else
+                            OutputImageFractalPerlin = RenderBWBuffer(noiseBufferFractalPerlin, width, height);
+#endif
                     }
                     );
                 }
@@ -206,14 +298,11 @@ namespace Noise2D
                 pbMarbleNoise.Image = OutputImageMarble;
                 pbPerlinNoise.Image = OutputImagePerlin;
 
-
-
                 Debug.WriteLine("Done.");
                 labelStatus.Text = "Idle";
                 labelStatus.ForeColor = Color.Green;
                 EnableControls(true);
             }
-
         }
 
 
@@ -269,16 +358,20 @@ namespace Noise2D
 
                 // Copy the BW values into the array.
                 System.Runtime.InteropServices.Marshal.Copy(ptrBW, bwValues, 0, nBytesLen);
-
-                for (int pos = 0; pos < nPixels; pos++)
+                for (int j = 0; j < height; j++)
                 {
-                    byte bwValue = (byte)(noiseBuffer[pos] * 255.0f);//BW
-                    bwValues[4 * pos + 0] = bwValue;//B
-                    bwValues[4 * pos + 1] = bwValue;//G
-                    bwValues[4 * pos + 2] = bwValue;//R
-                    bwValues[4 * pos + 3] = 255;//A
-                }
+                    for (int i = 0; i < width; i++)
+                    {
+                        int srcPos = j * width + i;
+                        int bmpPos = Math.Abs(bmpData.Stride) * j + 4 * i;
 
+                        byte bwValue = (byte)(noiseBuffer[srcPos] * 255.0f);//BW
+                        bwValues[bmpPos + 0] = bwValue;//B
+                        bwValues[bmpPos + 1] = bwValue;//G
+                        bwValues[bmpPos + 2] = bwValue;//R
+                        bwValues[bmpPos + 3] = 255;//A
+                    }
+                }
                 // Copy the RGB values back to the bitmap
                 System.Runtime.InteropServices.Marshal.Copy(bwValues, 0, ptrBW, nBytesLen);
 
@@ -306,7 +399,7 @@ namespace Noise2D
             if (hoverImage != null)
             {
                 if (hoverImage.Width < viewer.ClientSize.Width || hoverImage.Height < viewer.ClientSize.Height)
-                    viewer.ClientSize = new Size(hoverImage.Width, hoverImage.Height);
+                    viewer.ClientSize = new Size(hoverImage.Width, hoverImage.Height + 16);
                 viewer.pbViewer.Image = hoverImage;
                 viewer.viewerRequested = true;
             }
@@ -387,6 +480,10 @@ namespace Noise2D
             e.Cancel = !int.TryParse(tbImageWidth.Text, out int parsed) || parsed <= 0;
         }
 
+        private void tbSeamlessOvlp_Validating(object sender, CancelEventArgs e)
+        {
+            e.Cancel = !int.TryParse(tbSeamlessOvlp.Text, out int parsed) || parsed <= 0;
+        }
         private void tbImageHeight_Validating(object sender, CancelEventArgs e)
         {
             e.Cancel = !int.TryParse(tbImageHeight.Text, out int parsed) || parsed <= 0;
@@ -459,6 +556,19 @@ namespace Noise2D
             }
         }
 
+
+        private void tbSeamlessOvlp_Validated(object sender, EventArgs e)
+        {
+            int _seamlessOvlp = int.Parse(tbSeamlessOvlp.Text);
+            if (_seamlessOvlp != seamlessOvlp)
+            {
+                seamlessOvlp = _seamlessOvlp;
+                bNeedsRedraw = true;
+            }
+        }
+
+
+
         private void cbTableSize_SelectedIndexChanged(object sender, EventArgs e)
         {
             uint _tableSize = uint.Parse(cbTableSize.Text);
@@ -507,10 +617,19 @@ namespace Noise2D
                     FileStream fs = new FileStream(saveFileDialog1.FileName, FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
                     StreamWriter sw = new StreamWriter(fs);
 
+                    string matlab_cheatcode = "";
+
                     sw.WriteLine($"#y=linspace(0,{height},{height});");
+                    matlab_cheatcode += $"y=linspace(0,{height},{height});\r\n";
+
                     sw.WriteLine($"#x=linspace(0,{width},{width});");
+                    matlab_cheatcode += $"x=linspace(0,{width},{width});\r\n";
+
                     sw.WriteLine($"#[XX,YY]=meshgrid(x,y);");
+                    matlab_cheatcode += $"[XX,YY]=meshgrid(x,y);\r\n";
+
                     sw.WriteLine($"#surf(XX,YY,{Path.GetFileNameWithoutExtension(saveFileDialog1.FileName)});");
+                    matlab_cheatcode += $"surf(XX,YY,{Path.GetFileNameWithoutExtension(saveFileDialog1.FileName)});";
 
 
                     for (int idxHeight = 0; idxHeight < height; idxHeight++)
@@ -518,7 +637,7 @@ namespace Noise2D
                         string line = "";
                         for (int idxWidth = 0; idxWidth < width; idxWidth++)
                         {
-                            line += bufferToExport[idxHeight*width + idxWidth].ToString("F7", cultureUS) + ",";
+                            line += bufferToExport[idxHeight * width + idxWidth].ToString("F7", cultureUS) + ",";
                         }
                         line = line.Trim([',']);
                         sw.WriteLine(line);
@@ -526,7 +645,7 @@ namespace Noise2D
                     sw.Close();
                     fs.Close();
 
-            
+                    Clipboard.SetText(matlab_cheatcode);
                 }
             }
             catch (Exception ex)
@@ -540,6 +659,115 @@ namespace Noise2D
         private void btSetDefaults_Click(object sender, EventArgs e)
         {
             SetDefaults();
+        }
+
+
+
+
+        private void btToggleSeamless_Click(object sender, EventArgs e)
+        {
+            bMakeSeamless = !bMakeSeamless;
+            bNeedsRedraw = true;
+
+            if (bMakeSeamless)
+                btMakeSeamless.Text = "Disable seamless";
+            else
+                btMakeSeamless.Text = "Make seamless";
+        }
+
+
+        float[] GetTestPattern(bool bBullseye = true)
+        {
+            int outImageWidth = (width / 2) * 2;
+            int outImageHeight = (height / 2) * 2;
+
+            int diagonalLength = ((outImageWidth + outImageHeight) / 10 / 2) * 2;
+
+            float[] testPatternBuffer = new float[outImageWidth * outImageHeight];
+
+            for (int j = 0; j < outImageHeight; ++j)
+            {
+                int blackLength = j % diagonalLength + 1;
+                int whiteLength = diagonalLength - blackLength;
+                for (int i = 0; i < outImageWidth; ++i)
+                {
+                    int patpos = i % diagonalLength;
+                    testPatternBuffer[j * outImageWidth + i] = patpos < blackLength ? 0.0f : 1.0f;
+                }
+            }
+
+            if (bBullseye)
+            {
+                for (int j = -diagonalLength / 2; j <= diagonalLength / 2; ++j)
+                {
+                    for (int i = -diagonalLength / 2; i <= diagonalLength / 2; ++i)
+                    {
+                        float color = 0.0f;
+
+                        if ((i + 0.5f) * (j + 0.5f) > 0.0f)
+                            color = 1.0f;
+
+                        testPatternBuffer[(j + outImageHeight / 2) * outImageWidth + (i + outImageWidth / 2)] = color;
+                    }
+                }
+            }
+
+
+            int cj = outImageHeight / 2 - 1;
+            int ci = outImageWidth / 2 - 1;
+
+            testPatternBuffer[(cj) * outImageWidth + (ci)] = 0.0f;
+            testPatternBuffer[(cj + 1) * outImageWidth + (ci + 1)] = 0.0f;
+            testPatternBuffer[(cj + 1) * outImageWidth + (ci)] = 1.0f;
+            testPatternBuffer[(cj) * outImageWidth + (ci + 1)] = 1.0f;
+
+            return testPatternBuffer;
+        }
+
+        private void btSaveToPNG_Click(object sender, EventArgs e)
+        {
+            Bitmap? imgToExport = null;
+            string tag = (string)((Control)sender).Tag;
+
+            switch (int.Parse(tag))
+            {
+                case 0:
+                    imgToExport = OutputImageValue;
+                    break;
+                case 1:
+                    imgToExport = OutputImageTurb;
+                    break;
+                case 2:
+                    imgToExport = OutputImagePerlin;
+                    break;
+                case 3:
+                    imgToExport = OutputImageFractal;
+                    break;
+                case 4:
+                    imgToExport = OutputImageMarble;
+                    break;
+                case 5:
+                    //if (OutputImageFractalPerlin_seamless == null)
+                    imgToExport = OutputImageFractalPerlin;
+                    //else
+                    //    imgToExport = OutputImageFractalPerlin_seamless;
+                    break;
+            }
+
+            try
+            {
+                saveFileDialog1.Filter = "PNG files (*.png)|*.png";
+                saveFileDialog1.RestoreDirectory = true;
+
+                if (imgToExport != null && DialogResult.OK == saveFileDialog1.ShowDialog())
+                {
+                    imgToExport.Save(saveFileDialog1.FileName, System.Drawing.Imaging.ImageFormat.Png);
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine(ex.ToString());
+            }
         }
     }
 }

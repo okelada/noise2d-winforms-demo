@@ -75,7 +75,7 @@ public class BaseNoise
         }
     }
 
-    public float[] NormalizeBuffer(float[] noiseMap)
+    public static float[] NormalizeBuffer(float[] noiseMap)
     {
         float minValue = float.MaxValue, maxValue = float.MinValue;
 
@@ -86,6 +86,9 @@ public class BaseNoise
             if (noiseMap[i] < minValue)
                 minValue = noiseMap[i];
         }
+
+        if (minValue == maxValue)
+            return noiseMap;
 
         float[] normalizedMap = new float[noiseMap.Length];
 

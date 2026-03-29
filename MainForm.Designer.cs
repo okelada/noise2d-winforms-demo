@@ -30,6 +30,12 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             groupBox1 = new GroupBox();
+            button6 = new Button();
+            button5 = new Button();
+            button4 = new Button();
+            button3 = new Button();
+            button2 = new Button();
+            btSaveToPNG_0 = new Button();
             panel2 = new Panel();
             btSaveToCSV_5 = new Button();
             btSaveToCSV_4 = new Button();
@@ -50,6 +56,7 @@
             pbFractalValue = new PictureBox();
             pbValueNoise = new PictureBox();
             pbFractalPerlin = new PictureBox();
+            btMakeSeamless = new Button();
             linkLabel2 = new LinkLabel();
             linkLabel1 = new LinkLabel();
             label8 = new Label();
@@ -67,6 +74,8 @@
             tbImageHeight = new TextBox();
             groupBox2 = new GroupBox();
             groupBox4 = new GroupBox();
+            tbSeamlessOvlp = new TextBox();
+            label11 = new Label();
             cbTableSize = new ComboBox();
             label6 = new Label();
             udSeed = new NumericUpDown();
@@ -88,6 +97,12 @@
             // 
             // groupBox1
             // 
+            groupBox1.Controls.Add(button6);
+            groupBox1.Controls.Add(button5);
+            groupBox1.Controls.Add(button4);
+            groupBox1.Controls.Add(button3);
+            groupBox1.Controls.Add(button2);
+            groupBox1.Controls.Add(btSaveToPNG_0);
             groupBox1.Controls.Add(panel2);
             groupBox1.Controls.Add(btSaveToCSV_5);
             groupBox1.Controls.Add(btSaveToCSV_4);
@@ -114,6 +129,72 @@
             groupBox1.TabIndex = 3;
             groupBox1.TabStop = false;
             groupBox1.Text = "Outputs";
+            // 
+            // button6
+            // 
+            button6.Location = new Point(1127, 807);
+            button6.Name = "button6";
+            button6.Size = new Size(99, 27);
+            button6.TabIndex = 68;
+            button6.Tag = "5";
+            button6.Text = "Save to .png";
+            button6.UseVisualStyleBackColor = true;
+            button6.Click += btSaveToPNG_Click;
+            // 
+            // button5
+            // 
+            button5.Location = new Point(661, 807);
+            button5.Name = "button5";
+            button5.Size = new Size(99, 27);
+            button5.TabIndex = 67;
+            button5.Tag = "4";
+            button5.Text = "Save to .png";
+            button5.UseVisualStyleBackColor = true;
+            button5.Click += btSaveToPNG_Click;
+            // 
+            // button4
+            // 
+            button4.Location = new Point(201, 807);
+            button4.Name = "button4";
+            button4.Size = new Size(99, 27);
+            button4.TabIndex = 66;
+            button4.Tag = "3";
+            button4.Text = "Save to .png";
+            button4.UseVisualStyleBackColor = true;
+            button4.Click += btSaveToPNG_Click;
+            // 
+            // button3
+            // 
+            button3.Location = new Point(1127, 396);
+            button3.Name = "button3";
+            button3.Size = new Size(99, 27);
+            button3.TabIndex = 65;
+            button3.Tag = "2";
+            button3.Text = "Save to .png";
+            button3.UseVisualStyleBackColor = true;
+            button3.Click += btSaveToPNG_Click;
+            // 
+            // button2
+            // 
+            button2.Location = new Point(661, 396);
+            button2.Name = "button2";
+            button2.Size = new Size(99, 27);
+            button2.TabIndex = 64;
+            button2.Tag = "1";
+            button2.Text = "Save to .png";
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += btSaveToPNG_Click;
+            // 
+            // btSaveToPNG_0
+            // 
+            btSaveToPNG_0.Location = new Point(201, 396);
+            btSaveToPNG_0.Name = "btSaveToPNG_0";
+            btSaveToPNG_0.Size = new Size(99, 27);
+            btSaveToPNG_0.TabIndex = 63;
+            btSaveToPNG_0.Tag = "0";
+            btSaveToPNG_0.Text = "Save to .png";
+            btSaveToPNG_0.UseVisualStyleBackColor = true;
+            btSaveToPNG_0.Click += btSaveToPNG_Click;
             // 
             // panel2
             // 
@@ -180,7 +261,7 @@
             // 
             // btSaveToCSV_0
             // 
-            btSaveToCSV_0.Location = new Point(306, 395);
+            btSaveToCSV_0.Location = new Point(306, 396);
             btSaveToCSV_0.Name = "btSaveToCSV_0";
             btSaveToCSV_0.Size = new Size(99, 27);
             btSaveToCSV_0.TabIndex = 56;
@@ -329,6 +410,17 @@
             pbFractalPerlin.Tag = 0;
             pbFractalPerlin.Click += pbThumbnail_Click;
             // 
+            // btMakeSeamless
+            // 
+            btMakeSeamless.Location = new Point(919, 74);
+            btMakeSeamless.Name = "btMakeSeamless";
+            btMakeSeamless.Size = new Size(131, 27);
+            btMakeSeamless.TabIndex = 62;
+            btMakeSeamless.Tag = "5";
+            btMakeSeamless.Text = "Make seamless";
+            btMakeSeamless.UseVisualStyleBackColor = true;
+            btMakeSeamless.Click += btToggleSeamless_Click;
+            // 
             // linkLabel2
             // 
             linkLabel2.AutoSize = true;
@@ -354,7 +446,7 @@
             // label8
             // 
             label8.AutoSize = true;
-            label8.Location = new Point(211, 29);
+            label8.Location = new Point(178, 29);
             label8.Name = "label8";
             label8.Size = new Size(42, 20);
             label8.TabIndex = 51;
@@ -491,7 +583,7 @@
             groupBox2.Controls.Add(label7);
             groupBox2.Controls.Add(label5);
             groupBox2.Controls.Add(udFSnLayers);
-            groupBox2.Location = new Point(381, 9);
+            groupBox2.Location = new Point(524, 9);
             groupBox2.Name = "groupBox2";
             groupBox2.Size = new Size(383, 94);
             groupBox2.TabIndex = 52;
@@ -500,6 +592,8 @@
             // 
             // groupBox4
             // 
+            groupBox4.Controls.Add(tbSeamlessOvlp);
+            groupBox4.Controls.Add(label11);
             groupBox4.Controls.Add(cbTableSize);
             groupBox4.Controls.Add(label6);
             groupBox4.Controls.Add(udSeed);
@@ -510,17 +604,37 @@
             groupBox4.Controls.Add(label2);
             groupBox4.Location = new Point(12, 9);
             groupBox4.Name = "groupBox4";
-            groupBox4.Size = new Size(349, 94);
+            groupBox4.Size = new Size(506, 94);
             groupBox4.TabIndex = 54;
             groupBox4.TabStop = false;
             groupBox4.Text = "Global";
+            // 
+            // tbSeamlessOvlp
+            // 
+            tbSeamlessOvlp.Location = new Point(436, 26);
+            tbSeamlessOvlp.Name = "tbSeamlessOvlp";
+            tbSeamlessOvlp.Size = new Size(60, 27);
+            tbSeamlessOvlp.TabIndex = 54;
+            tbSeamlessOvlp.Text = "32";
+            tbSeamlessOvlp.TextAlign = HorizontalAlignment.Right;
+            tbSeamlessOvlp.Validating += tbSeamlessOvlp_Validating;
+            tbSeamlessOvlp.Validated += tbSeamlessOvlp_Validated;
+            // 
+            // label11
+            // 
+            label11.AutoSize = true;
+            label11.Location = new Point(327, 28);
+            label11.Name = "label11";
+            label11.Size = new Size(103, 20);
+            label11.TabIndex = 55;
+            label11.Text = "Seamless ovlp";
             // 
             // cbTableSize
             // 
             cbTableSize.DropDownStyle = ComboBoxStyle.DropDownList;
             cbTableSize.FormattingEnabled = true;
             cbTableSize.Items.AddRange(new object[] { "2", "4", "8", "16", "32", "64", "128", "256", "512", "1024", "2048" });
-            cbTableSize.Location = new Point(259, 59);
+            cbTableSize.Location = new Point(226, 59);
             cbTableSize.Name = "cbTableSize";
             cbTableSize.Size = new Size(60, 28);
             cbTableSize.TabIndex = 53;
@@ -529,7 +643,7 @@
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new Point(180, 61);
+            label6.Location = new Point(147, 61);
             label6.Name = "label6";
             label6.Size = new Size(73, 20);
             label6.TabIndex = 52;
@@ -537,7 +651,7 @@
             // 
             // udSeed
             // 
-            udSeed.Location = new Point(259, 26);
+            udSeed.Location = new Point(226, 26);
             udSeed.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
             udSeed.Name = "udSeed";
             udSeed.Size = new Size(60, 27);
@@ -558,7 +672,7 @@
             // 
             // btSetDefaults
             // 
-            btSetDefaults.Location = new Point(770, 26);
+            btSetDefaults.Location = new Point(919, 26);
             btSetDefaults.Name = "btSetDefaults";
             btSetDefaults.Size = new Size(107, 29);
             btSetDefaults.TabIndex = 55;
@@ -576,6 +690,7 @@
             Controls.Add(linkLabel1);
             Controls.Add(linkLabel2);
             Controls.Add(groupBox4);
+            Controls.Add(btMakeSeamless);
             Controls.Add(groupBox2);
             Controls.Add(groupBox1);
             FormBorderStyle = FormBorderStyle.FixedSingle;
@@ -653,5 +768,14 @@
         private Button btSaveToCSV_1;
         private Panel panel2;
         private SaveFileDialog saveFileDialog1;
+        private Button btMakeSeamless;
+        private TextBox tbSeamlessOvlp;
+        private Label label11;
+        private Button btSaveToPNG_0;
+        private Button button3;
+        private Button button2;
+        private Button button6;
+        private Button button5;
+        private Button button4;
     }
 }

@@ -5,6 +5,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.Intrinsics.X86;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -15,11 +16,10 @@ namespace Noise2D
     {
         private Size OldClientSize;
         public bool viewerRequested = false;
-
+   
         public ViewerForm()
         {
             InitializeComponent();
-
         }
 
         private void ViewerForm_KeyDown(object sender, KeyEventArgs e)
@@ -33,16 +33,25 @@ namespace Noise2D
             }
         }
 
+        private float GetZoom()
+        {
+            if (pbViewer.Image != null)
+                return (100.0f * pbViewer.Width) / pbViewer.Image.Width;
+            else
+                return 0f;
+        }
 
 
         private string GetFormTitle()
         {
             if (pbViewer.Image != null)
             {
-                if (pbViewer.SizeMode != PictureBoxSizeMode.StretchImage)
-                    return "Zoom 100% - right click to fit";
+                float zoom = GetZoom();
+
+                if (pbViewer.SizeMode != PictureBoxSizeMode.Zoom)
+                    return $"{pbViewer.Image.Width}x{pbViewer.Image.Height}   Zoom 100% - right click to fit";
                 else
-                    return "Zoom " + (100 * pbViewer.Width) / pbViewer.Image.Width + "% - right click to 1:1";
+                    return $"{pbViewer.Image.Width}x{pbViewer.Image.Height}   Zoom {zoom}%" + (zoom != 100f?" - right click to 1:1":"");
             }
             else
                 return "Viewer";
@@ -55,18 +64,19 @@ namespace Noise2D
             {
                 viewerRequested = false;
             }
-            else
+            else //right
             {
-                if (pbViewer.SizeMode != PictureBoxSizeMode.StretchImage)
+                if (pbViewer.SizeMode != PictureBoxSizeMode.Zoom)
                 {
                     if (pbViewer.Image != null)
                     {
-                        pbViewer.SizeMode = PictureBoxSizeMode.StretchImage;
+                        pbViewer.SizeMode = PictureBoxSizeMode.Zoom;
                         pbViewer.Dock = DockStyle.Fill;
                         Text = GetFormTitle();
                     }
                 }
                 else
+                if(GetZoom()!=100f)
                 {
                     pbViewer.SizeMode = PictureBoxSizeMode.AutoSize;
                     pbViewer.Dock = DockStyle.None;
@@ -88,7 +98,9 @@ namespace Noise2D
 
         private void pbViewer_VisibleChanged(object sender, EventArgs e)
         {
-            pbViewer.SizeMode = PictureBoxSizeMode.StretchImage;
+  
+
+            pbViewer.SizeMode = PictureBoxSizeMode.Zoom;
             pbViewer.Dock = DockStyle.Fill;
             Text = GetFormTitle();
         }

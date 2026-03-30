@@ -7,7 +7,6 @@ Added seamless texture generation.
 ![Capture.](/artwork/Capture.jpg)
 
 <br/>
-View from octave:
 
 ![Example of seamless fractal terrain.](/artwork/terrain.png)
 

@@ -414,7 +414,7 @@
             // 
             // btMakeSeamless
             // 
-            btMakeSeamless.Location = new Point(963, 74);
+            btMakeSeamless.Location = new Point(963, 67);
             btMakeSeamless.Name = "btMakeSeamless";
             btMakeSeamless.Size = new Size(131, 27);
             btMakeSeamless.TabIndex = 62;
@@ -618,9 +618,9 @@
             label12.AutoSize = true;
             label12.Location = new Point(344, 61);
             label12.Name = "label12";
-            label12.Size = new Size(86, 20);
+            label12.Size = new Size(89, 20);
             label12.TabIndex = 57;
-            label12.Text = "Ovlp interp.";
+            label12.Text = "Ovlp. interp.";
             // 
             // cbOvlpInterpolator
             // 
@@ -635,9 +635,9 @@
             // 
             // tbSeamlessOvlp
             // 
-            tbSeamlessOvlp.Location = new Point(484, 26);
+            tbSeamlessOvlp.Location = new Point(474, 26);
             tbSeamlessOvlp.Name = "tbSeamlessOvlp";
-            tbSeamlessOvlp.Size = new Size(60, 27);
+            tbSeamlessOvlp.Size = new Size(70, 27);
             tbSeamlessOvlp.TabIndex = 54;
             tbSeamlessOvlp.Text = "32";
             tbSeamlessOvlp.TextAlign = HorizontalAlignment.Right;
@@ -649,9 +649,9 @@
             label11.AutoSize = true;
             label11.Location = new Point(344, 28);
             label11.Name = "label11";
-            label11.Size = new Size(103, 20);
+            label11.Size = new Size(124, 20);
             label11.TabIndex = 55;
-            label11.Text = "Seamless ovlp";
+            label11.Text = "Seamless overlap";
             // 
             // cbTableSize
             // 

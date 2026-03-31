@@ -102,7 +102,7 @@ namespace Noise2D
 
             cbOvlpInterpolator.SelectedIndex = 0;//.Text = "Linear";
 
-            bMakeSeamless = false;
+            bMakeSeamless = true;
             bNeedsRedraw = true;
 #if USE_DEBUG_SEAMLESS
             testPatternBuffer = GetTestPattern(false);
@@ -721,7 +721,7 @@ namespace Noise2D
             if (bMakeSeamless)
                 btMakeSeamless.Text = "Disable seamless";
             else
-                btMakeSeamless.Text = "Make seamless";
+                btMakeSeamless.Text = "Enable seamless";
         }
 
 

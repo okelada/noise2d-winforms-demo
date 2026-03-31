@@ -13,7 +13,7 @@ namespace Noise2D
         private int _overlap;
 
         public delegate float OvlpInterpDelegate(float x, float x0, float dist);
-        OvlpInterpDelegate OvlpInterpHandler = OvlpInterp1;
+        OvlpInterpDelegate OvlpInterpHandler;
 
         public SeamlessOverlap(int width, int height, int overlap, OvlpInterpDelegate _OvlpInterp)
         {
@@ -62,7 +62,7 @@ namespace Noise2D
             int offsetJ = -height / 2;
             int offsetI = -width / 2;
 
-            ////4th quadrant
+            //4th quadrant
             for (int j = height / 2; j < height; ++j)
             {
                 for (int i = width / 2; i < width; ++i)
@@ -90,7 +90,7 @@ namespace Noise2D
 
 
                         if (outputCol >= (ci - overlap) && outputCol <= (ci + overlap))
-                            blendFactor = 1.0f - OvlpInterpHandler( outputCol , ci - overlap , 2.0f * overlap);
+                            blendFactor = 1.0f - OvlpInterpHandler(outputCol, ci - overlap, 2.0f * overlap);
 
                         seamlessBuffer[pos] = seamlessBuffer[pos] * (blendFactor) + baseBuffer[j * width + i] * (1.0f - blendFactor);
                     }
@@ -135,7 +135,7 @@ namespace Noise2D
                 }
             }
 
-            //////2nd quadrant
+            //2nd quadrant
             for (int j = 0; j < height / 2; ++j)
             {
                 for (int i = width / 2; i < width; ++i)
@@ -165,13 +165,28 @@ namespace Noise2D
         public float[] GetSeamlessBuffer(float[] baseBuffer, out int outImageWidth, out int outImageHeight)
         {
             int overlap = _overlap;
+            float[]? seamlessBufferLower = null;
+            float[]? seamlessBufferUpper = null;
+            int outImageWidthU = 0, outImageHeightU = 0;
+            int outImageWidthL = 0, outImageHeightL = 0;
 
-            float[] seamlessBufferLower = GetSeamlessBufferLower(baseBuffer, out int outImageWidthL, out int outImageHeightL);
-            float[] seamlessBufferUpper = GetSeamlessBufferUpper(baseBuffer, out int outImageWidthU, out int outImageHeightU);
+            Parallel.Invoke(
+            () =>
+            {
+                seamlessBufferLower = GetSeamlessBufferLower(baseBuffer, out int ImageWidthL, out int ImageHeightL);
+                outImageWidthL = ImageWidthL;
+                outImageHeightL = ImageHeightL;
+            },
+            () =>
+            {
+                seamlessBufferUpper = GetSeamlessBufferUpper(baseBuffer, out int ImageWidthU, out int ImageHeightU);
+                outImageWidthU = ImageWidthU;
+                outImageHeightU = ImageHeightU;
+            });
 
             outImageWidth = outImageWidthL;
-
             outImageHeight = (outImageHeightL / 2) * 2;
+
             outImageHeight -= 2 * overlap;
 
             if (overlap > outImageHeight / 2)
@@ -199,7 +214,7 @@ namespace Noise2D
 
             int offsetJ = Math.Min(outImageHeightL / 2, 2 * overlap);
 
-            ////lower hemisphere
+            //lower hemisphere
             for (int j = outImageHeightL / 2; j < outImageHeightL; ++j)
             {
                 for (int i = 0; i < outImageWidthL; ++i)

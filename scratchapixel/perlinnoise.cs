@@ -193,7 +193,7 @@ public class PerlinNoise : BaseNoise
         return NoiseGlobals.lerp(e, f, w); // g
     }
 
-    /* inline */
+
     private int hash(in int x, in int y, in int z)
     {
         return permutationTable[permutationTable[permutationTable[x] + y] + z];
@@ -256,8 +256,7 @@ public class PerlinNoise : BaseNoise
         {
             for (int i = 0; i < width; ++i)
             {
-                float sample = (eval3(new Vec3f(i * frequency, 0.0f, j * frequency), out Vec3f? derivs) + 1.0f) * 0.5f;
-
+                float sample = eval3(new Vec3f(i * frequency, 0.0f, j * frequency), out Vec3f? derivs);
                 noiseMap[j * width + i] = sample;
             }
         }
@@ -280,8 +279,7 @@ public class PerlinNoise : BaseNoise
 
                 for (int l = 0; l < numLayers; ++l)
                 {
-                    noiseMap[j * imageWidth + i] += (1.0f + eval3(pNoise, out Vec3f? derivs)) * 0.5f * amplitude;
-
+                    noiseMap[j * imageWidth + i] += eval3(pNoise, out Vec3f? derivs) * amplitude;
                     pNoise *= fBm_lacunarity;
                     amplitude *= fBm_gain;
                 }

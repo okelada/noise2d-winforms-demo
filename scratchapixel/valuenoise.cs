@@ -132,7 +132,6 @@ public class ValueNoise : BaseNoise
         float[] noiseMap = new float[imageWidth * imageHeight];
 
 
-        //float maxNoiseVal = 0.0f;
         for (int j = 0; j < imageHeight; ++j)
         {
             for (int i = 0; i < imageWidth; ++i)
@@ -145,8 +144,6 @@ public class ValueNoise : BaseNoise
                     pNoise *= fBm_lacunarity;
                     amplitude *= fBm_gain;
                 }
-                //if (noiseMap[j * imageWidth + i] > maxNoiseVal)
-                //    maxNoiseVal = noiseMap[j * imageWidth + i];
             }
         }
 
@@ -160,7 +157,6 @@ public class ValueNoise : BaseNoise
         float[] noiseMap = new float[imageWidth * imageHeight];
 
         // Generate turbulence pattern
-        //float maxNoiseVal = 0.0f;
         for (int j = 0; j < imageHeight; ++j)
         {
             for (int i = 0; i < imageWidth; ++i)
@@ -173,11 +169,8 @@ public class ValueNoise : BaseNoise
                     pNoise *= fBm_lacunarity;
                     amplitude *= fBm_gain;
                 }
-                //if (noiseMap[j * imageWidth + i] > maxNoiseVal) maxNoiseVal = noiseMap[j * imageWidth + i];
             }
         }
-
-        //for (int i = 0; i < imageWidth * imageHeight; ++i) noiseMap[i] /= maxNoiseVal;
 
         return NormalizeBuffer(noiseMap);
     }
@@ -204,7 +197,7 @@ public class ValueNoise : BaseNoise
                     amplitude *= fBm_gain;
                 }
                 // we "displace" the value i used in the sin() expression by noiseValue * 100
-                noiseMap[j * imageWidth + i] = (float)(Math.Sin((i + noiseValue * 100.0f) * 2 * Math.PI / 200.0f) + 1.0f) / 2.0f;
+                noiseMap[j * imageWidth + i] = (float)Math.Sin((i + noiseValue * 100.0f) * 2.0f * Math.PI / 200.0f);
             }
         }
         return NormalizeBuffer(noiseMap);

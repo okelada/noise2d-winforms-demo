@@ -419,7 +419,7 @@
             btMakeSeamless.Size = new Size(131, 27);
             btMakeSeamless.TabIndex = 62;
             btMakeSeamless.Tag = "5";
-            btMakeSeamless.Text = "Make seamless";
+            btMakeSeamless.Text = "Disable seamless";
             btMakeSeamless.UseVisualStyleBackColor = true;
             btMakeSeamless.Click += btToggleSeamless_Click;
             // 

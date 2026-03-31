@@ -70,7 +70,6 @@ public class BaseNoise
             int temp = permutationTable[k];
             permutationTable[k] = permutationTable[i];
             permutationTable[i] = temp;
-            //std::swap(permutationTable[k], permutationTable[i]);
             permutationTable[k + tableSize] = permutationTable[k];
         }
     }

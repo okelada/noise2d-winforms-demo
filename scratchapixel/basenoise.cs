@@ -24,7 +24,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
-
+using System.Diagnostics;
 
 namespace Noise2D;
 
@@ -96,6 +96,23 @@ public class BaseNoise
             normalizedMap[i] = (noiseMap[i] - minValue) / (maxValue - minValue);
         }
         return normalizedMap;
+    }
+
+
+    public static void ShowMinMax(float[] noiseMap, out float minValue, out float maxValue)
+    {
+        minValue = float.MaxValue;
+        maxValue = float.MinValue;
+
+        for (int i = 0; i < noiseMap.Length; ++i)
+        {
+            if (noiseMap[i] > maxValue)
+                maxValue = noiseMap[i];
+            if (noiseMap[i] < minValue)
+                minValue = noiseMap[i];
+        }
+
+        Debug.WriteLine($"Min:{minValue} Max:{maxValue}");
     }
 
 }

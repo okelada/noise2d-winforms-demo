@@ -315,11 +315,15 @@ namespace Noise2D
 #else
                         PerlinNoise perlinNoise = new PerlinNoise(actualWidth, actualHeight, frequency, seed, tableSize);
                         noiseBufferFractalPerlin = perlinNoise.GetFractalNoiseBuffer(fBm_lacunarity, fBm_gain, numLayers);
+
+                        //BaseNoise.ShowMinMax(noiseBufferFractalPerlin, out float minValue, out float maxValue);
+
                         if (bMakeSeamless)
                         {
                             SeamlessOverlap seamless = new SeamlessOverlap(actualWidth, actualHeight, seamlessOvlp, seamlessOvlpInterpolator);
                             noiseBufferFractalPerlin = seamless.GetSeamlessBuffer(noiseBufferFractalPerlin, out int outImageWidth, out int outImageHeight);
                             OutputImageFractalPerlin = RenderBWBuffer(noiseBufferFractalPerlin, outImageWidth, outImageHeight);
+                            //BaseNoise.ShowMinMax(noiseBufferFractalPerlin, out minValue, out maxValue);
                         }
                         else
                             OutputImageFractalPerlin = RenderBWBuffer(noiseBufferFractalPerlin, actualWidth, actualHeight);

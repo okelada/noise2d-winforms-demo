@@ -236,7 +236,7 @@ namespace Noise2D
                 }
             }
 
-            return seamlessBuffer;
+            return BaseNoise.NormalizeBuffer(seamlessBuffer);
         }
     }
 }

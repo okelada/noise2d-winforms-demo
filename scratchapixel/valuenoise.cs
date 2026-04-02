@@ -104,7 +104,8 @@ public class ValueNoise : BaseNoise
             }
         }
 
-        return NormalizeBuffer(noiseMap);
+        //return NormalizeBuffer(noiseMap);
+        return noiseMap;
     }
 
     public float[] GetNoiseBuffer()
@@ -122,7 +123,8 @@ public class ValueNoise : BaseNoise
                 noiseMap[j * imageWidth + i] = eval2(new Vec2f(i, j).mult(frequency));
             }
         }
-        return NormalizeBuffer(noiseMap);
+        //return NormalizeBuffer(noiseMap);
+        return noiseMap;
     }
 
     public float[] GetFractalNoiseBuffer(float fBm_lacunarity, float fBm_gain, int numLayers)
@@ -147,7 +149,8 @@ public class ValueNoise : BaseNoise
             }
         }
 
-        return NormalizeBuffer(noiseMap);
+        //return NormalizeBuffer(noiseMap);
+        return noiseMap;
     }
 
     public float[] GetTurbulenceNoiseBuffer(float fBm_lacunarity, float fBm_gain, int numLayers)
@@ -172,7 +175,8 @@ public class ValueNoise : BaseNoise
             }
         }
 
-        return NormalizeBuffer(noiseMap);
+        //return NormalizeBuffer(noiseMap);
+        return noiseMap;
     }
 
     public float[] GetMarbleNoiseBuffer(float fBm_lacunarity, float fBm_gain, int numLayers)
@@ -200,6 +204,7 @@ public class ValueNoise : BaseNoise
                 noiseMap[j * imageWidth + i] = (float)Math.Sin((i + noiseValue * 100.0f) * 2.0f * Math.PI / 200.0f);
             }
         }
-        return NormalizeBuffer(noiseMap);
+        //return NormalizeBuffer(noiseMap);
+        return noiseMap;
     }
 }

@@ -98,8 +98,6 @@ namespace Noise2D
 
         private void pbViewer_VisibleChanged(object sender, EventArgs e)
         {
-  
-
             pbViewer.SizeMode = PictureBoxSizeMode.Zoom;
             pbViewer.Dock = DockStyle.Fill;
             Text = GetFormTitle();

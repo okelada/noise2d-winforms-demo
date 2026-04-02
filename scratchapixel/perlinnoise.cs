@@ -261,7 +261,8 @@ public class PerlinNoise : BaseNoise
             }
         }
 
-        return NormalizeBuffer(noiseMap);
+        //return NormalizeBuffer(noiseMap);
+        return noiseMap;
     }
 
     public float[] GetFractalNoiseBuffer(float fBm_lacunarity, float fBm_gain, int numLayers)
@@ -286,7 +287,8 @@ public class PerlinNoise : BaseNoise
             }
         }
 
-        return NormalizeBuffer(noiseMap);
+        //return NormalizeBuffer(noiseMap);
+        return noiseMap;
     }
 }
 

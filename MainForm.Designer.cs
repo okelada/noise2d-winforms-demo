@@ -729,6 +729,7 @@
             Click += MainForm_Click;
             DoubleClick += MainForm_DoubleClick;
             KeyDown += MainForm_KeyDown;
+            MouseClick += MainForm_MouseClick;
             groupBoxOutputs.ResumeLayout(false);
             groupBoxOutputs.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pbPerlinNoise).EndInit();

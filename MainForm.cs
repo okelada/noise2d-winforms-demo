@@ -11,7 +11,6 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Globalization;
 using System.Threading.Channels;
-//using wifitracelistener;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -21,7 +20,6 @@ namespace Noise2D
     {
         ViewerForm viewer = new ViewerForm();
         System.Windows.Forms.Timer viewerFormTimer = new System.Windows.Forms.Timer();
-        //wifiTraceListener myTraceListener;
 
         int baseWidth;
         int baseHeight;
@@ -55,12 +53,11 @@ namespace Noise2D
         public MainForm()
         {
             InitializeComponent();
-            //myTraceListener = new wifiTraceListener(lvLog, true, "LOG", TraceEventType.Verbose, 600);
 
             foreach (Control control in Controls)
                 control.MouseClick += RedirectMouseClick;
 
-            groupBox1.Click += groupBox1_Click;
+            groupBoxOutputs.Click += groupBox1_Click;
 
             labelStatus.Text = "Idle";
             labelStatus.ForeColor = Color.Green;
@@ -100,7 +97,7 @@ namespace Noise2D
             cbTableSize.Text = tableSize.ToString();
             tbSeamlessOvlp.Text = seamlessOvlp.ToString();
 
-            cbOvlpInterpolator.SelectedIndex = 0;//.Text = "Linear";
+            cbOvlpInterpolator.SelectedIndex = 0;
 
             bMakeSeamless = true;
             bNeedsRedraw = true;
@@ -124,14 +121,11 @@ namespace Noise2D
 
         private void EnableControls(bool bDisable)
         {
-            tbImageWidth.Enabled = bDisable;
-            tbImageHeight.Enabled = bDisable;
-            tbFSFrequency.Enabled = bDisable;
-            tbFSFrequencyMultiplier.Enabled = bDisable;
-            tbFSAmplitudeMultiplier.Enabled = bDisable;
-            udFSnLayers.Enabled = bDisable;
-            udSeed.Enabled = bDisable;
-            cbTableSize.Enabled = bDisable;
+            btMakeSeamless.Enabled = bDisable;
+            btSetDefaults.Enabled = bDisable;
+            groupBoxfBm.Enabled = bDisable;
+            groupBoxGlobal.Enabled = bDisable;
+            groupBoxOutputs.Enabled = bDisable;
         }
 
 
@@ -315,7 +309,6 @@ namespace Noise2D
 #else
                         PerlinNoise perlinNoise = new PerlinNoise(actualWidth, actualHeight, frequency, seed, tableSize);
                         noiseBufferFractalPerlin = perlinNoise.GetFractalNoiseBuffer(fBm_lacunarity, fBm_gain, numLayers);
-
                         //BaseNoise.ShowMinMax(noiseBufferFractalPerlin, out float minValue, out float maxValue);
 
                         if (bMakeSeamless)
@@ -664,7 +657,7 @@ namespace Noise2D
                 saveFileDialog1.Filter = "Csv files (*.csv)|*.csv";
                 saveFileDialog1.RestoreDirectory = true;
 
-                if (bufferToExport != null && DialogResult.OK == saveFileDialog1.ShowDialog())
+                if(imgToExport != null && bufferToExport != null && DialogResult.OK == saveFileDialog1.ShowDialog())
                 {
                     FileStream fs = new FileStream(saveFileDialog1.FileName, FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
                     StreamWriter sw = new StreamWriter(fs);

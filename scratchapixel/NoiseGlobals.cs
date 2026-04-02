@@ -27,10 +27,13 @@
 namespace Noise2D;
 
 public class Vec2f
-{
+{    
+    public float x;
+    public float y;
     public Vec2f()
     {
-
+        x = default(float);
+        y = default(float);
     }
 
     public Vec2f(float xx, float yy)
@@ -50,16 +53,18 @@ public class Vec2f
         y *= m;
         return this;
     }
-
-    public float x = default(float);
-    public float y = default(float);
 }
 
 public class Vec3f
 {
+    public float x;
+    public float y;
+    public float z;
     public Vec3f()
     {
-
+        x = default(float);
+        y = default(float);
+        z = default(float);
     }
     public Vec3f(float xx, float yy, float zz)
     {
@@ -91,11 +96,11 @@ public class Vec3f
         return this;
     }
 
-
     public Vec3f cross(in Vec3f v)
     {
         return new Vec3f(y * v.z - z * v.y, z * v.x - x * v.z, x * v.y - y * v.x);
     }
+
     public Vec3f normalize()
     {
         float len2 = length2();
@@ -106,10 +111,6 @@ public class Vec3f
         }
         return this;
     }
-
-    public float x = default(float);
-    public float y = default(float);
-    public float z = default(float);
 }
 
 public static class NoiseGlobals

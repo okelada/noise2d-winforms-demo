@@ -31,7 +31,7 @@ namespace Noise2D;
 
 public class ValueNoise : BaseNoise
 {
-    float[] r;
+    readonly float[] r;
 
     public ValueNoise(int _width, int _height, float _frequency, int _seed, uint _tableSize) : base(_width, _height, _frequency, _seed, _tableSize)
     {

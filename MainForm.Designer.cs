@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            groupBox1 = new GroupBox();
+            groupBoxOutputs = new GroupBox();
             button6 = new Button();
             button5 = new Button();
             button4 = new Button();
@@ -72,8 +72,8 @@
             label1 = new Label();
             label2 = new Label();
             tbImageHeight = new TextBox();
-            groupBox2 = new GroupBox();
-            groupBox4 = new GroupBox();
+            groupBoxfBm = new GroupBox();
+            groupBoxGlobal = new GroupBox();
             label12 = new Label();
             cbOvlpInterpolator = new ComboBox();
             tbSeamlessOvlp = new TextBox();
@@ -84,7 +84,7 @@
             labelStatus = new Label();
             btSetDefaults = new Button();
             saveFileDialog1 = new SaveFileDialog();
-            groupBox1.SuspendLayout();
+            groupBoxOutputs.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pbPerlinNoise).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pbMarbleNoise).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pbTurbNoise).BeginInit();
@@ -92,45 +92,45 @@
             ((System.ComponentModel.ISupportInitialize)pbValueNoise).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pbFractalPerlin).BeginInit();
             ((System.ComponentModel.ISupportInitialize)udFSnLayers).BeginInit();
-            groupBox2.SuspendLayout();
-            groupBox4.SuspendLayout();
+            groupBoxfBm.SuspendLayout();
+            groupBoxGlobal.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)udSeed).BeginInit();
             SuspendLayout();
             // 
-            // groupBox1
+            // groupBoxOutputs
             // 
-            groupBox1.Controls.Add(button6);
-            groupBox1.Controls.Add(button5);
-            groupBox1.Controls.Add(button4);
-            groupBox1.Controls.Add(button3);
-            groupBox1.Controls.Add(button2);
-            groupBox1.Controls.Add(btSaveToPNG_0);
-            groupBox1.Controls.Add(panel2);
-            groupBox1.Controls.Add(btSaveToCSV_5);
-            groupBox1.Controls.Add(btSaveToCSV_4);
-            groupBox1.Controls.Add(btSaveToCSV_3);
-            groupBox1.Controls.Add(btSaveToCSV_2);
-            groupBox1.Controls.Add(btSaveToCSV_1);
-            groupBox1.Controls.Add(btSaveToCSV_0);
-            groupBox1.Controls.Add(panel1);
-            groupBox1.Controls.Add(label9);
-            groupBox1.Controls.Add(label10);
-            groupBox1.Controls.Add(Turb);
-            groupBox1.Controls.Add(Fractal);
-            groupBox1.Controls.Add(label13);
-            groupBox1.Controls.Add(label14);
-            groupBox1.Controls.Add(pbPerlinNoise);
-            groupBox1.Controls.Add(pbMarbleNoise);
-            groupBox1.Controls.Add(pbTurbNoise);
-            groupBox1.Controls.Add(pbFractalValue);
-            groupBox1.Controls.Add(pbValueNoise);
-            groupBox1.Controls.Add(pbFractalPerlin);
-            groupBox1.Location = new Point(12, 109);
-            groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(1355, 840);
-            groupBox1.TabIndex = 3;
-            groupBox1.TabStop = false;
-            groupBox1.Text = "Outputs";
+            groupBoxOutputs.Controls.Add(button6);
+            groupBoxOutputs.Controls.Add(button5);
+            groupBoxOutputs.Controls.Add(button4);
+            groupBoxOutputs.Controls.Add(button3);
+            groupBoxOutputs.Controls.Add(button2);
+            groupBoxOutputs.Controls.Add(btSaveToPNG_0);
+            groupBoxOutputs.Controls.Add(panel2);
+            groupBoxOutputs.Controls.Add(btSaveToCSV_5);
+            groupBoxOutputs.Controls.Add(btSaveToCSV_4);
+            groupBoxOutputs.Controls.Add(btSaveToCSV_3);
+            groupBoxOutputs.Controls.Add(btSaveToCSV_2);
+            groupBoxOutputs.Controls.Add(btSaveToCSV_1);
+            groupBoxOutputs.Controls.Add(btSaveToCSV_0);
+            groupBoxOutputs.Controls.Add(panel1);
+            groupBoxOutputs.Controls.Add(label9);
+            groupBoxOutputs.Controls.Add(label10);
+            groupBoxOutputs.Controls.Add(Turb);
+            groupBoxOutputs.Controls.Add(Fractal);
+            groupBoxOutputs.Controls.Add(label13);
+            groupBoxOutputs.Controls.Add(label14);
+            groupBoxOutputs.Controls.Add(pbPerlinNoise);
+            groupBoxOutputs.Controls.Add(pbMarbleNoise);
+            groupBoxOutputs.Controls.Add(pbTurbNoise);
+            groupBoxOutputs.Controls.Add(pbFractalValue);
+            groupBoxOutputs.Controls.Add(pbValueNoise);
+            groupBoxOutputs.Controls.Add(pbFractalPerlin);
+            groupBoxOutputs.Location = new Point(12, 109);
+            groupBoxOutputs.Name = "groupBoxOutputs";
+            groupBoxOutputs.Size = new Size(1355, 840);
+            groupBoxOutputs.TabIndex = 3;
+            groupBoxOutputs.TabStop = false;
+            groupBoxOutputs.Text = "Outputs";
             // 
             // button6
             // 
@@ -575,43 +575,43 @@
             tbImageHeight.Validating += tbImageHeight_Validating;
             tbImageHeight.Validated += tbImageHeight_Validated;
             // 
-            // groupBox2
+            // groupBoxfBm
             // 
-            groupBox2.Controls.Add(tbFSAmplitudeMultiplier);
-            groupBox2.Controls.Add(label3);
-            groupBox2.Controls.Add(tbFSFrequency);
-            groupBox2.Controls.Add(tbFSFrequencyMultiplier);
-            groupBox2.Controls.Add(label4);
-            groupBox2.Controls.Add(label7);
-            groupBox2.Controls.Add(label5);
-            groupBox2.Controls.Add(udFSnLayers);
-            groupBox2.Location = new Point(568, 9);
-            groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(383, 94);
-            groupBox2.TabIndex = 52;
-            groupBox2.TabStop = false;
-            groupBox2.Text = "Fractal sum";
+            groupBoxfBm.Controls.Add(tbFSAmplitudeMultiplier);
+            groupBoxfBm.Controls.Add(label3);
+            groupBoxfBm.Controls.Add(tbFSFrequency);
+            groupBoxfBm.Controls.Add(tbFSFrequencyMultiplier);
+            groupBoxfBm.Controls.Add(label4);
+            groupBoxfBm.Controls.Add(label7);
+            groupBoxfBm.Controls.Add(label5);
+            groupBoxfBm.Controls.Add(udFSnLayers);
+            groupBoxfBm.Location = new Point(568, 9);
+            groupBoxfBm.Name = "groupBoxfBm";
+            groupBoxfBm.Size = new Size(383, 94);
+            groupBoxfBm.TabIndex = 52;
+            groupBoxfBm.TabStop = false;
+            groupBoxfBm.Text = "Fractal sum";
             // 
-            // groupBox4
+            // groupBoxGlobal
             // 
-            groupBox4.Controls.Add(label12);
-            groupBox4.Controls.Add(cbOvlpInterpolator);
-            groupBox4.Controls.Add(tbSeamlessOvlp);
-            groupBox4.Controls.Add(label11);
-            groupBox4.Controls.Add(cbTableSize);
-            groupBox4.Controls.Add(label6);
-            groupBox4.Controls.Add(udSeed);
-            groupBox4.Controls.Add(tbImageHeight);
-            groupBox4.Controls.Add(tbImageWidth);
-            groupBox4.Controls.Add(label1);
-            groupBox4.Controls.Add(label8);
-            groupBox4.Controls.Add(label2);
-            groupBox4.Location = new Point(12, 9);
-            groupBox4.Name = "groupBox4";
-            groupBox4.Size = new Size(550, 94);
-            groupBox4.TabIndex = 54;
-            groupBox4.TabStop = false;
-            groupBox4.Text = "Global";
+            groupBoxGlobal.Controls.Add(label12);
+            groupBoxGlobal.Controls.Add(cbOvlpInterpolator);
+            groupBoxGlobal.Controls.Add(tbSeamlessOvlp);
+            groupBoxGlobal.Controls.Add(label11);
+            groupBoxGlobal.Controls.Add(cbTableSize);
+            groupBoxGlobal.Controls.Add(label6);
+            groupBoxGlobal.Controls.Add(udSeed);
+            groupBoxGlobal.Controls.Add(tbImageHeight);
+            groupBoxGlobal.Controls.Add(tbImageWidth);
+            groupBoxGlobal.Controls.Add(label1);
+            groupBoxGlobal.Controls.Add(label8);
+            groupBoxGlobal.Controls.Add(label2);
+            groupBoxGlobal.Location = new Point(12, 9);
+            groupBoxGlobal.Name = "groupBoxGlobal";
+            groupBoxGlobal.Size = new Size(550, 94);
+            groupBoxGlobal.TabIndex = 54;
+            groupBoxGlobal.TabStop = false;
+            groupBoxGlobal.Text = "Global";
             // 
             // label12
             // 
@@ -713,10 +713,10 @@
             Controls.Add(labelStatus);
             Controls.Add(linkLabel1);
             Controls.Add(linkLabel2);
-            Controls.Add(groupBox4);
+            Controls.Add(groupBoxGlobal);
             Controls.Add(btMakeSeamless);
-            Controls.Add(groupBox2);
-            Controls.Add(groupBox1);
+            Controls.Add(groupBoxfBm);
+            Controls.Add(groupBoxOutputs);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Icon = (Icon)resources.GetObject("$this.Icon");
             KeyPreview = true;
@@ -729,8 +729,8 @@
             Click += MainForm_Click;
             DoubleClick += MainForm_DoubleClick;
             KeyDown += MainForm_KeyDown;
-            groupBox1.ResumeLayout(false);
-            groupBox1.PerformLayout();
+            groupBoxOutputs.ResumeLayout(false);
+            groupBoxOutputs.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pbPerlinNoise).EndInit();
             ((System.ComponentModel.ISupportInitialize)pbMarbleNoise).EndInit();
             ((System.ComponentModel.ISupportInitialize)pbTurbNoise).EndInit();
@@ -738,17 +738,17 @@
             ((System.ComponentModel.ISupportInitialize)pbValueNoise).EndInit();
             ((System.ComponentModel.ISupportInitialize)pbFractalPerlin).EndInit();
             ((System.ComponentModel.ISupportInitialize)udFSnLayers).EndInit();
-            groupBox2.ResumeLayout(false);
-            groupBox2.PerformLayout();
-            groupBox4.ResumeLayout(false);
-            groupBox4.PerformLayout();
+            groupBoxfBm.ResumeLayout(false);
+            groupBoxfBm.PerformLayout();
+            groupBoxGlobal.ResumeLayout(false);
+            groupBoxGlobal.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)udSeed).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
-        private GroupBox groupBox1;
+        private GroupBox groupBoxOutputs;
         private PictureBox pbPerlinNoise;
         private PictureBox pbMarbleNoise;
         private PictureBox pbTurbNoise;
@@ -776,8 +776,8 @@
         private Label label2;
         private TextBox tbImageHeight;
         private Label label8;
-        private GroupBox groupBox2;
-        private GroupBox groupBox4;
+        private GroupBox groupBoxfBm;
+        private GroupBox groupBoxGlobal;
         private Label labelStatus;
         private Panel panel1;
         private NumericUpDown udSeed;

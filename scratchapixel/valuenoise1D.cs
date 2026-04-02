@@ -7,6 +7,7 @@ using System.Diagnostics;
 
 namespace Noise2D;
 
+//not used
 
 public class valuenoise1D
 {

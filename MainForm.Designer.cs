@@ -30,6 +30,12 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             groupBoxOutputs = new GroupBox();
+            btPreviewSeamlessGrid_3 = new Button();
+            btPreviewSeamlessGrid_0 = new Button();
+            btPreviewSeamlessGrid_4 = new Button();
+            btPreviewSeamlessGrid_1 = new Button();
+            btPreviewSeamlessGrid_2 = new Button();
+            btPreviewSeamlessGrid_5 = new Button();
             button6 = new Button();
             button5 = new Button();
             button4 = new Button();
@@ -99,6 +105,12 @@
             // 
             // groupBoxOutputs
             // 
+            groupBoxOutputs.Controls.Add(btPreviewSeamlessGrid_3);
+            groupBoxOutputs.Controls.Add(btPreviewSeamlessGrid_0);
+            groupBoxOutputs.Controls.Add(btPreviewSeamlessGrid_4);
+            groupBoxOutputs.Controls.Add(btPreviewSeamlessGrid_1);
+            groupBoxOutputs.Controls.Add(btPreviewSeamlessGrid_2);
+            groupBoxOutputs.Controls.Add(btPreviewSeamlessGrid_5);
             groupBoxOutputs.Controls.Add(button6);
             groupBoxOutputs.Controls.Add(button5);
             groupBoxOutputs.Controls.Add(button4);
@@ -131,6 +143,72 @@
             groupBoxOutputs.TabIndex = 3;
             groupBoxOutputs.TabStop = false;
             groupBoxOutputs.Text = "Outputs";
+            // 
+            // btPreviewSeamlessGrid_3
+            // 
+            btPreviewSeamlessGrid_3.Location = new Point(135, 807);
+            btPreviewSeamlessGrid_3.Name = "btPreviewSeamlessGrid_3";
+            btPreviewSeamlessGrid_3.Size = new Size(60, 27);
+            btPreviewSeamlessGrid_3.TabIndex = 74;
+            btPreviewSeamlessGrid_3.Tag = 3;
+            btPreviewSeamlessGrid_3.Text = "3x3";
+            btPreviewSeamlessGrid_3.UseVisualStyleBackColor = true;
+            btPreviewSeamlessGrid_3.Click += btPreviewSeamlessGrid_Click;
+            // 
+            // btPreviewSeamlessGrid_0
+            // 
+            btPreviewSeamlessGrid_0.Location = new Point(135, 396);
+            btPreviewSeamlessGrid_0.Name = "btPreviewSeamlessGrid_0";
+            btPreviewSeamlessGrid_0.Size = new Size(60, 27);
+            btPreviewSeamlessGrid_0.TabIndex = 73;
+            btPreviewSeamlessGrid_0.Tag = 0;
+            btPreviewSeamlessGrid_0.Text = "3x3";
+            btPreviewSeamlessGrid_0.UseVisualStyleBackColor = true;
+            btPreviewSeamlessGrid_0.Click += btPreviewSeamlessGrid_Click;
+            // 
+            // btPreviewSeamlessGrid_4
+            // 
+            btPreviewSeamlessGrid_4.Location = new Point(595, 807);
+            btPreviewSeamlessGrid_4.Name = "btPreviewSeamlessGrid_4";
+            btPreviewSeamlessGrid_4.Size = new Size(60, 27);
+            btPreviewSeamlessGrid_4.TabIndex = 72;
+            btPreviewSeamlessGrid_4.Tag = 4;
+            btPreviewSeamlessGrid_4.Text = "3x3";
+            btPreviewSeamlessGrid_4.UseVisualStyleBackColor = true;
+            btPreviewSeamlessGrid_4.Click += btPreviewSeamlessGrid_Click;
+            // 
+            // btPreviewSeamlessGrid_1
+            // 
+            btPreviewSeamlessGrid_1.Location = new Point(595, 396);
+            btPreviewSeamlessGrid_1.Name = "btPreviewSeamlessGrid_1";
+            btPreviewSeamlessGrid_1.Size = new Size(60, 27);
+            btPreviewSeamlessGrid_1.TabIndex = 71;
+            btPreviewSeamlessGrid_1.Tag = 1;
+            btPreviewSeamlessGrid_1.Text = "3x3";
+            btPreviewSeamlessGrid_1.UseVisualStyleBackColor = true;
+            btPreviewSeamlessGrid_1.Click += btPreviewSeamlessGrid_Click;
+            // 
+            // btPreviewSeamlessGrid_2
+            // 
+            btPreviewSeamlessGrid_2.Location = new Point(1061, 396);
+            btPreviewSeamlessGrid_2.Name = "btPreviewSeamlessGrid_2";
+            btPreviewSeamlessGrid_2.Size = new Size(60, 27);
+            btPreviewSeamlessGrid_2.TabIndex = 70;
+            btPreviewSeamlessGrid_2.Tag = 2;
+            btPreviewSeamlessGrid_2.Text = "3x3";
+            btPreviewSeamlessGrid_2.UseVisualStyleBackColor = true;
+            btPreviewSeamlessGrid_2.Click += btPreviewSeamlessGrid_Click;
+            // 
+            // btPreviewSeamlessGrid_5
+            // 
+            btPreviewSeamlessGrid_5.Location = new Point(1061, 807);
+            btPreviewSeamlessGrid_5.Name = "btPreviewSeamlessGrid_5";
+            btPreviewSeamlessGrid_5.Size = new Size(60, 27);
+            btPreviewSeamlessGrid_5.TabIndex = 69;
+            btPreviewSeamlessGrid_5.Tag = 5;
+            btPreviewSeamlessGrid_5.Text = "3x3";
+            btPreviewSeamlessGrid_5.UseVisualStyleBackColor = true;
+            btPreviewSeamlessGrid_5.Click += btPreviewSeamlessGrid_Click;
             // 
             // button6
             // 
@@ -284,7 +362,7 @@
             // 
             label9.AutoSize = true;
             label9.Font = new Font("Segoe UI", 7.8F);
-            label9.Location = new Point(953, 395);
+            label9.Location = new Point(918, 401);
             label9.Name = "label9";
             label9.Size = new Size(80, 17);
             label9.TabIndex = 38;
@@ -294,7 +372,7 @@
             // 
             label10.AutoSize = true;
             label10.Font = new Font("Segoe UI", 7.8F);
-            label10.Location = new Point(487, 806);
+            label10.Location = new Point(454, 811);
             label10.Name = "label10";
             label10.Size = new Size(133, 17);
             label10.TabIndex = 37;
@@ -304,17 +382,17 @@
             // 
             Turb.AutoSize = true;
             Turb.Font = new Font("Segoe UI", 7.8F);
-            Turb.Location = new Point(487, 395);
+            Turb.Location = new Point(454, 401);
             Turb.Name = "Turb";
-            Turb.Size = new Size(151, 17);
+            Turb.Size = new Size(117, 17);
             Turb.TabIndex = 36;
-            Turb.Text = "Fractal sum / Turbulence";
+            Turb.Text = "Fractal sum / Turb.";
             // 
             // Fractal
             // 
             Fractal.AutoSize = true;
             Fractal.Font = new Font("Segoe UI", 7.8F);
-            Fractal.Location = new Point(27, 806);
+            Fractal.Location = new Point(6, 812);
             Fractal.Name = "Fractal";
             Fractal.Size = new Size(118, 17);
             Fractal.TabIndex = 35;
@@ -324,7 +402,7 @@
             // 
             label13.AutoSize = true;
             label13.Font = new Font("Segoe UI", 7.8F);
-            label13.Location = new Point(27, 395);
+            label13.Location = new Point(6, 406);
             label13.Name = "label13";
             label13.Size = new Size(79, 17);
             label13.TabIndex = 34;
@@ -334,7 +412,7 @@
             // 
             label14.AutoSize = true;
             label14.Font = new Font("Segoe UI", 7.8F);
-            label14.Location = new Point(953, 806);
+            label14.Location = new Point(918, 811);
             label14.Name = "label14";
             label14.Size = new Size(119, 17);
             label14.TabIndex = 33;
@@ -804,5 +882,11 @@
         private Button button4;
         private ComboBox cbOvlpInterpolator;
         private Label label12;
+        private Button btPreviewSeamlessGrid_5;
+        private Button btPreviewSeamlessGrid_3;
+        private Button btPreviewSeamlessGrid_0;
+        private Button btPreviewSeamlessGrid_4;
+        private Button btPreviewSeamlessGrid_1;
+        private Button btPreviewSeamlessGrid_2;
     }
 }

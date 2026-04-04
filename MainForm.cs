@@ -10,9 +10,11 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Globalization;
+using System.Runtime;
 using System.Threading.Channels;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Noise2D
 {
@@ -433,22 +435,17 @@ namespace Noise2D
             return OutputImage;
         }
 
-        private void ShowViewer(object sender, EventArgs e)
+        private void ShowViewer(object sender, EventArgs e, Bitmap? hoverImage)
         {
-            Bitmap? hoverImage = null;
-
             if (sender == null)
                 return;
 
-            int senderTag = (int)((PictureBox)sender).Tag;
-            hoverImage = (Bitmap)((PictureBox)sender).Image;
+            int senderTag = (int)((Control)sender).Tag;
 
             if (hoverImage != null)
             {
-                if (hoverImage.Width < viewer.ClientSize.Width || hoverImage.Height < viewer.ClientSize.Height)
-                    viewer.ClientSize = new Size(hoverImage.Width, hoverImage.Height + 16);
-                viewer.pbViewer.Image = hoverImage;
-                viewer.viewerRequested = true;
+                viewer.SetImage(this,hoverImage);
+                viewerFormTimer.Interval = 100;
             }
         }
 
@@ -474,8 +471,8 @@ namespace Noise2D
 
         private void pbThumbnail_Click(object sender, EventArgs e)
         {
-            viewerFormTimer.Interval = 100;
-            ShowViewer(sender, e);
+            //viewerFormTimer.Interval = 100;
+            ShowViewer(sender, e, (Bitmap)((PictureBox)sender).Image);
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -830,6 +827,69 @@ namespace Noise2D
         private void MainForm_MouseClick(object sender, MouseEventArgs e)
         {
             viewer.viewerRequested = false;
+        }
+
+        private Bitmap GetSemalessGridImage(float[] noiseBuffer, int imgWidth, int imgHeight)
+        {
+            int gridWidth = 3 * imgWidth;
+            int gridHeight = 3 * imgHeight;
+
+            float[] gridBuffer = new float[noiseBuffer.Length * 9];
+
+            for (int c = 0; c < 3; c++)
+            {
+                int start_i = c * imgWidth;
+                for (int r = 0; r < 3; r++)
+                {
+                    int start_j = r * imgHeight;
+
+                    for (int j = 0; j < imgHeight; j++)
+                        for (int i = 0; i < imgWidth; i++)
+                        {
+                            gridBuffer[(j + start_j) * gridWidth + (i + start_i)] = noiseBuffer[j * imgWidth + i];
+                        }
+                }
+            }
+            return RenderBWBuffer(gridBuffer, gridWidth, gridHeight);
+        }
+
+        private void btPreviewSeamlessGrid_Click(object sender, EventArgs e)
+        {
+            float[]? bufferToExport = null;
+            int? tag = (int)((Control)sender).Tag;
+
+            Bitmap? imgToExport = null;
+
+            switch (tag)
+            {
+                case 0:
+                    bufferToExport = noiseBufferValue;
+                    imgToExport = OutputImageValue;
+                    break;
+                case 1:
+                    bufferToExport = noiseBufferTurb;
+                    imgToExport = OutputImageTurb;
+                    break;
+                case 2:
+                    bufferToExport = noiseBufferPerlin;
+                    imgToExport = OutputImagePerlin;
+                    break;
+                case 3:
+                    bufferToExport = noiseBufferFractal;
+                    imgToExport = OutputImageFractal;
+                    break;
+                case 4:
+                    bufferToExport = noiseBufferMarble;
+                    imgToExport = OutputImageMarble;
+                    break;
+                case 5:
+                    bufferToExport = noiseBufferFractalPerlin;
+                    imgToExport = OutputImageFractalPerlin;
+                    break;
+            }
+
+            if(bufferToExport!= null && imgToExport != null)
+                ShowViewer(sender, e, GetSemalessGridImage(bufferToExport,imgToExport.Width,imgToExport.Height));
         }
     }
 }

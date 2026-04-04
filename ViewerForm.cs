@@ -102,5 +102,19 @@ namespace Noise2D
             pbViewer.Dock = DockStyle.Fill;
             Text = GetFormTitle();
         }
+
+        public void SetImage(Form MainForm, Bitmap theImage)
+        {
+            if (theImage.Width < ClientSize.Width || theImage.Height < ClientSize.Height)
+                ClientSize = new Size(theImage.Width, theImage.Height + 16);
+            else
+            {
+                Size clientSize = new Size(Math.Min(MainForm.ClientSize.Width, theImage.Width),
+                    Math.Min(MainForm.ClientSize.Height - 64, theImage.Height + 16));
+                ClientSize = clientSize;
+            }
+            pbViewer.Image = theImage;
+            viewerRequested = true;
+        }
     }
 }

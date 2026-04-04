@@ -51,7 +51,7 @@ namespace Noise2D
                 if (pbViewer.SizeMode != PictureBoxSizeMode.Zoom)
                     return $"{pbViewer.Image.Width}x{pbViewer.Image.Height}   Zoom 100% - right click to fit";
                 else
-                    return $"{pbViewer.Image.Width}x{pbViewer.Image.Height}   Zoom {zoom}%" + (zoom != 100f?" - right click to 1:1":"");
+                    return $"{pbViewer.Image.Width}x{pbViewer.Image.Height}   Zoom {zoom:F0}%" + (zoom != 100f?" - right click to 1:1":"");
             }
             else
                 return "Viewer";

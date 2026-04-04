@@ -115,7 +115,7 @@ namespace Noise2D
 
             ResetAll();
             viewerFormTimer.Tick += ViewerFormTimer_Tick;
-            viewerFormTimer.Interval = 250;
+            viewerFormTimer.Interval = 100;
             viewerFormTimer.Start();
             //valueNoise1D.TestModulo();
         }
@@ -164,19 +164,13 @@ namespace Noise2D
                 if (!viewer.viewerRequested)// && !bMouseInViewer)
                 {
                     viewer.Hide();
-                    //  viewerFormTimer.Stop();
-                    viewerFormTimer.Interval = 3000;
-                    //  Debug.Write("THIDE");
                 }
             }
             else if (viewer.viewerRequested && !viewer.Visible)
             {
                 viewer.StartPosition = FormStartPosition.Manual;
                 viewer.Location = new Point(this.Location.X + (this.Width - viewer.Width) / 2, this.Location.Y + (this.Height - viewer.Height) / 2);
-
                 viewer.Show(this);
-                viewerFormTimer.Interval = 250;
-                //Debug.Write("TSHOW");
             }
 
             if (bNeedsRedraw)
@@ -435,17 +429,11 @@ namespace Noise2D
             return OutputImage;
         }
 
-        private void ShowViewer(object sender, EventArgs e, Bitmap? hoverImage)
+        private void ShowViewer (Bitmap? hoverImage)
         {
-            if (sender == null)
-                return;
-
-            int senderTag = (int)((Control)sender).Tag;
-
             if (hoverImage != null)
             {
                 viewer.SetImage(this,hoverImage);
-                viewerFormTimer.Interval = 100;
             }
         }
 
@@ -471,8 +459,7 @@ namespace Noise2D
 
         private void pbThumbnail_Click(object sender, EventArgs e)
         {
-            //viewerFormTimer.Interval = 100;
-            ShowViewer(sender, e, (Bitmap)((PictureBox)sender).Image);
+            ShowViewer((Bitmap)((PictureBox)sender).Image);
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -889,7 +876,7 @@ namespace Noise2D
             }
 
             if(bufferToExport!= null && imgToExport != null)
-                ShowViewer(sender, e, GetSemalessGridImage(bufferToExport,imgToExport.Width,imgToExport.Height));
+                ShowViewer(GetSemalessGridImage(bufferToExport,imgToExport.Width,imgToExport.Height));
         }
     }
 }
